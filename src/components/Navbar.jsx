@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Menu, Mountain, X } from 'lucide-react';
+import { ArrowUpRight, Menu, X } from 'lucide-react';
+import BrandMark from './BrandMark';
 
 const navItems = [
   { label: 'Home', id: 'hero' },
@@ -27,12 +28,7 @@ const Navbar = ({ onOpenInquiry, onScrollTo }) => {
           onClick={() => handleNavClick('hero')}
           aria-label="Go to Flavour Holidays home"
         >
-          <span className="site-navbar__brand-mark" aria-hidden="true">
-            <Mountain size={20} color="#090c10" strokeWidth={2.5} />
-          </span>
-          <span className="site-navbar__brand-name">
-            flavour<span>.</span>
-          </span>
+          <BrandMark />
         </button>
 
         <div className="desktop-links">
@@ -51,10 +47,8 @@ const Navbar = ({ onOpenInquiry, onScrollTo }) => {
 
         <div className="site-navbar__actions">
           <button className="nav-book-btn" type="button" onClick={() => onOpenInquiry()}>
-            Book a custom trip
-            <span className="nav-book-btn__icon" aria-hidden="true">
-              <ArrowUpRight size={13} />
-            </span>
+            Plan a trip
+            <ArrowUpRight size={15} aria-hidden="true" />
           </button>
 
           <button
@@ -92,7 +86,7 @@ const Navbar = ({ onOpenInquiry, onScrollTo }) => {
               onOpenInquiry();
             }}
           >
-            Plan a custom trip <ArrowUpRight size={16} aria-hidden="true" />
+            Plan a trip <ArrowUpRight size={16} aria-hidden="true" />
           </button>
         </div>
       )}

@@ -9,6 +9,21 @@ const prefersReducedMotion = () => (
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 );
 
+const formatDateInput = (date) => date.toISOString().slice(0, 10);
+
+const getInitialDateRange = () => {
+  const checkInDate = new Date();
+  checkInDate.setDate(checkInDate.getDate() + 14);
+
+  const checkOutDate = new Date(checkInDate);
+  checkOutDate.setDate(checkOutDate.getDate() + 5);
+
+  return {
+    checkIn: formatDateInput(checkInDate),
+    checkOut: formatDateInput(checkOutDate)
+  };
+};
+
 const Hero = ({
   tours,
   toursLoading = false,
@@ -17,9 +32,10 @@ const Hero = ({
   bookingSearchLoading,
   bookingSearchError = ''
 }) => {
+  const initialDateRange = getInitialDateRange();
   const [selectedTourId, setSelectedTourId] = useState('');
-  const [checkIn, setCheckIn] = useState('2026-09-20');
-  const [checkOut, setCheckOut] = useState('2026-09-25');
+  const [checkIn, setCheckIn] = useState(initialDateRange.checkIn);
+  const [checkOut, setCheckOut] = useState(initialDateRange.checkOut);
   const [people, setPeople] = useState(2);
   const [videoPaused, setVideoPaused] = useState(prefersReducedMotion);
   const [routeFormExpanded, setRouteFormExpanded] = useState(false);
@@ -68,10 +84,10 @@ const Hero = ({
   };
 
   const bookingStatus = toursLoading
-    ? 'Loading tour options…'
+    ? 'Loading tour options...'
     : toursError || (!hasTours ? 'Tour options are temporarily unavailable. Please try again.' : '')
       || bookingSearchError
-      || (bookingSearchLoading ? 'Searching available routes…' : 'Choose dates and travelers to see matching routes.');
+      || (bookingSearchLoading ? 'Searching available routes...' : 'Choose dates and travelers to see matching routes.');
   const hasBookingError = Boolean(toursError || bookingSearchError || (!toursLoading && !hasTours));
 
   return (
@@ -95,10 +111,10 @@ const Hero = ({
       <div className="hero-content-shell">
         <div className="hero-grid">
           <div className="hero-copy">
-            <span className="hero-eyebrow">Kashmir winter expeditions</span>
-            <h1 id="hero-title">Uncover Kashmir&apos;s winter frontiers.</h1>
+            <span className="hero-eyebrow">Private Kashmir journeys</span>
+            <h1 id="hero-title">Travel the Himalayas with quiet confidence.</h1>
             <p className="hero-copy__description">
-              Handcrafted high-altitude expeditions in Kashmir Valley, Gurez Frontiers &amp; Ladakh. Experience day-by-day checkpoints with local guides &amp; 4x4 Thars.
+              Handcrafted itineraries across Kashmir Valley, Gurez and Ladakh with local planning, thoughtful stays and mountain-ready transport.
             </p>
           </div>
 
@@ -202,7 +218,7 @@ const Hero = ({
               </div>
 
               <button className="hero-search-action" type="submit" disabled={!canSearch}>
-                {bookingSearchLoading ? 'Searching routes…' : 'Find available tours'}
+                {bookingSearchLoading ? 'Searching routes...' : 'Find available tours'}
               </button>
             </div>
 

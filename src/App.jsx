@@ -136,14 +136,10 @@ function App() {
       />
 
       {tours.length > 0 && (
-        <section id="checkpoints" className="support-section checkpoints-section" style={{ padding: '60px 24px', maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <div className="badge-neon" style={{ marginBottom: '10px', display: 'inline-flex' }}>
-              📍 INTERACTIVE CHECKPOINTS SPOTLIGHT
-            </div>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 900 }}>
-              KASHMIR &amp; LADAKH <span style={{ color: '#00F5D4' }}>STEP-BY-STEP CHECKPOINTS.</span>
-            </h2>
+        <section id="checkpoints" className="section section--compact checkpoints-section">
+          <div className="section-heading section-heading--center">
+            <span className="eyebrow">Route Preview</span>
+            <h2>Day-by-day checkpoints, clearly mapped.</h2>
           </div>
 
           <CheckpointTimeline

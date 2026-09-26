@@ -152,13 +152,7 @@ const Hero = ({
                     disabled={!hasTours || toursLoading || Boolean(toursError)}
                   >
                     <option value="" disabled>Select a tour</option>
-                    {tours.reduce((unique, tour) => {
-                      const label = tour.destination_name || tour.title;
-                      if (!unique.some(t => (t.destination_name || t.title) === label)) {
-                        unique.push(tour);
-                      }
-                      return unique;
-                    }, []).map((tour) => (
+                    {tours.map((tour) => (
                       <option key={tour.id} value={tour.id}>
                         {tour.destination_name ? `${tour.destination_name} - ${tour.title}` : tour.title}
                       </option>

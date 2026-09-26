@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (
+  import.meta.env.DEV
+    ? 'http://127.0.0.1:8000/api'
+    : 'https://flavour-holidays-backend.onrender.com/api'
+);
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -363,6 +367,7 @@ export const fetchTours = async () => {
     return Array.isArray(data) ? data : MOCK_TOURS;
   } catch (error) {
     console.warn("API server offline or error, serving rich mock tours data", error);
+    if (import.meta.env.PROD) throw error;
     return MOCK_TOURS;
   }
 };
@@ -440,6 +445,7 @@ export const submitBookingSearch = async (bookingData) => {
     return response.data;
   } catch (error) {
     console.warn("API booking search error, filtering local tour data:", error);
+    if (import.meta.env.PROD) throw error;
     const selectedTour = MOCK_TOURS.find((tour) => tour.id === Number(bookingData.selected_tour));
     return {
       status: "success",

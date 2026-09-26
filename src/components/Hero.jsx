@@ -86,8 +86,8 @@ const Hero = ({
   const bookingStatus = toursLoading
     ? 'Loading tour options...'
     : toursError || (!hasTours ? 'Tour options are temporarily unavailable. Please try again.' : '')
-      || bookingSearchError
-      || (bookingSearchLoading ? 'Searching available routes...' : 'Choose dates and travelers to see matching routes.');
+    || bookingSearchError
+    || (bookingSearchLoading ? 'Searching available routes...' : 'Choose dates and travelers to see matching routes.');
   const hasBookingError = Boolean(toursError || bookingSearchError || (!toursLoading && !hasTours));
 
   return (

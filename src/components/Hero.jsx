@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Calendar, ChevronDown, MapPin, Pause, Play, Users } from 'lucide-react';
+import { Calendar, MapPin, Pause, Play, Users } from 'lucide-react';
 
 const HERO_VIDEO_URL = 'https://kombai-assets.b-cdn.net/generated_assets/93ec2c35-0d4c-4209-9d28-b2a8c59d8080/031636d4907d49df8fa69207bf34f191.mp4';
-const HERO_POSTER_URL = 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=2000&auto=format&fit=crop';
+const HERO_POSTER_FALLBACK = 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=2000&auto=format&fit=crop';
 
 const prefersReducedMotion = () => (
   typeof window !== 'undefined' &&
@@ -37,20 +37,18 @@ const Hero = ({
   const [checkIn, setCheckIn] = useState(initialDateRange.checkIn);
   const [checkOut, setCheckOut] = useState(initialDateRange.checkOut);
   const [people, setPeople] = useState(2);
-  const [videoPaused, setVideoPaused] = useState(prefersReducedMotion);
-  const [routeFormExpanded, setRouteFormExpanded] = useState(false);
+  const [videoPaused, setVideoPaused] = useState(() => prefersReducedMotion());
   const videoRef = useRef(null);
 
   const activeTourId = selectedTourId || tours[0]?.id || '';
   const hasTours = tours.length > 0;
   const isSearching = toursLoading || bookingSearchLoading;
   const canSearch = hasTours && !toursLoading && !toursError && !bookingSearchLoading && Boolean(activeTourId);
+  const kashmirPoster = tours.find((tour) => /kashmir/i.test(tour.destination_name || ''))?.cover_image;
+  const heroPoster = kashmirPoster || HERO_POSTER_FALLBACK;
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      videoRef.current?.pause();
-      setVideoPaused(true);
-    }
+    if (prefersReducedMotion()) videoRef.current?.pause();
   }, []);
 
   const toggleVideo = async () => {
@@ -86,8 +84,8 @@ const Hero = ({
   const bookingStatus = toursLoading
     ? 'Loading tour options...'
     : toursError || (!hasTours ? 'Tour options are temporarily unavailable. Please try again.' : '')
-    || bookingSearchError
-    || (bookingSearchLoading ? 'Searching available routes...' : 'Choose dates and travelers to see matching routes.');
+      || bookingSearchError
+      || (bookingSearchLoading ? 'Searching available routes...' : 'Choose dates and travelers to see matching routes.');
   const hasBookingError = Boolean(toursError || bookingSearchError || (!toursLoading && !hasTours));
 
   return (
@@ -101,7 +99,7 @@ const Hero = ({
           loop
           playsInline
           preload="metadata"
-          poster={HERO_POSTER_URL}
+          poster={heroPoster}
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
@@ -111,36 +109,24 @@ const Hero = ({
       <div className="hero-content-shell">
         <div className="hero-grid">
           <div className="hero-copy">
-            <span className="hero-eyebrow">Private Kashmir journeys</span>
-            <h1 id="hero-title">Travel the Himalayas with quiet confidence.</h1>
+            <p className="hero-intro">Local hosts. Thoughtful stays. Mountain-ready routes.</p>
+            <h1 id="hero-title">Find your way through Kashmir.</h1>
             <p className="hero-copy__description">
-              Handcrafted itineraries across Kashmir Valley, Gurez and Ladakh with local planning, thoughtful stays and mountain-ready transport.
+              Compare guided journeys across Kashmir Valley, Kargil and Ladakh, then shape the details with a local team.
             </p>
           </div>
 
-          <form className={`hero-search-card${routeFormExpanded ? ' hero-search-card--expanded' : ''}`} onSubmit={handleSubmit} aria-busy={isSearching}>
+          <form className="hero-search-card" onSubmit={handleSubmit} aria-busy={isSearching} aria-describedby="hero-booking-status">
             <div className="hero-search-card__header">
-              <button
-                className="hero-search-card__toggle"
-                type="button"
-                onClick={() => setRouteFormExpanded((isExpanded) => !isExpanded)}
-                aria-expanded={routeFormExpanded}
-                aria-controls="hero-search-fields"
-              >
-                <span>
-                  <span className="hero-search-card__title">Plan your route</span>
-                  <span className="hero-search-card__subtitle">Build a route around your dates and crew.</span>
-                </span>
-                <ChevronDown className="hero-search-card__toggle-icon" size={18} aria-hidden="true" />
-              </button>
-              <p className={`hero-search-card__status${hasBookingError ? ' hero-form-status--error' : ''}`} role="status" aria-live="polite">
-                {bookingStatus}
-              </p>
+              <div>
+                <h2 className="hero-search-card__title">Find available tours</h2>
+                <p className="hero-search-card__subtitle">Choose your route and travel dates.</p>
+              </div>
             </div>
 
-            <div className="hero-search-fields" id="hero-search-fields">
-              <div className="hero-search-col">
-                <label className="hero-search-label" htmlFor="hero-tour">Tour</label>
+            <div className="hero-search-fields">
+              <div className="hero-search-col hero-search-col--tour">
+                <label className="hero-search-label" htmlFor="hero-tour">Destination tour</label>
                 <div className="hero-search-control">
                   <MapPin size={16} aria-hidden="true" />
                   <select
@@ -154,15 +140,14 @@ const Hero = ({
                     <option value="" disabled>Select a tour</option>
                     {tours.map((tour) => (
                       <option key={tour.id} value={tour.id}>
-                        {tour.destination_name ? `${tour.destination_name} - ${tour.title}` : tour.title}
+                        {tour.destination_name ? `${tour.destination_name} — ${tour.title}` : tour.title}
                       </option>
                     ))}
                   </select>
-
                 </div>
               </div>
 
-              <div className="hero-search-col">
+              <div className="hero-search-col hero-search-col--check-in">
                 <label className="hero-search-label" htmlFor="hero-check-in">Check-in</label>
                 <div className="hero-search-control">
                   <Calendar size={16} aria-hidden="true" />
@@ -177,7 +162,7 @@ const Hero = ({
                 </div>
               </div>
 
-              <div className="hero-search-col">
+              <div className="hero-search-col hero-search-col--check-out">
                 <label className="hero-search-label" htmlFor="hero-check-out">Check-out</label>
                 <div className="hero-search-control">
                   <Calendar size={16} aria-hidden="true" />
@@ -194,7 +179,7 @@ const Hero = ({
               </div>
 
               <div className="hero-search-col">
-                <label className="hero-search-label" htmlFor="hero-people">People</label>
+                <label className="hero-search-label" htmlFor="hero-people">Travelers</label>
                 <div className="hero-search-control">
                   <Users size={16} aria-hidden="true" />
                   <input
@@ -207,7 +192,6 @@ const Hero = ({
                     onChange={(event) => setPeople(event.target.value)}
                     required
                   />
-                  <ChevronDown size={14} aria-hidden="true" />
                 </div>
               </div>
 
@@ -216,7 +200,12 @@ const Hero = ({
               </button>
             </div>
 
-            <p id="hero-booking-status" className={`hero-form-status${hasBookingError ? ' hero-form-status--error' : ''}`} aria-live="polite">
+            <p
+              id="hero-booking-status"
+              className={`hero-form-status${hasBookingError ? ' hero-form-status--error' : ''}`}
+              role="status"
+              aria-live="polite"
+            >
               {bookingStatus}
             </p>
           </form>
@@ -232,7 +221,7 @@ const Hero = ({
         disabled={prefersReducedMotion()}
       >
         {videoPaused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-        <span>{videoPaused ? 'Play background' : 'Pause background'}</span>
+        <span>{videoPaused ? 'Play scene' : 'Pause scene'}</span>
       </button>
     </section>
   );

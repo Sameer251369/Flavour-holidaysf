@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, BookOpen, Clock, User, X } from 'lucide-react';
+import { getImageAltWithCredit } from '../utils/imageAlt';
 
 const TourBlog = ({ blogs, onSelectTourBySlug }) => {
   const [selectedBlog, setSelectedBlog] = useState(null);
@@ -16,7 +17,7 @@ const TourBlog = ({ blogs, onSelectTourBySlug }) => {
         {blogs && blogs.map((blog) => (
           <article key={blog.id} className="content-card content-card--clickable" onClick={() => setSelectedBlog(blog)}>
             <div className="content-card__image">
-              <img src={blog.cover_image} alt={blog.title} />
+              <img src={blog.cover_image} alt={getImageAltWithCredit(blog.title, blog.cover_image)} style={{ width: '100%', height: '100%' }} />
               <span className="soft-badge">{blog.vibe_tag || 'Guide'}</span>
             </div>
 
@@ -44,7 +45,7 @@ const TourBlog = ({ blogs, onSelectTourBySlug }) => {
             <h2>{selectedBlog.title}</h2>
             <p className="modal-subtitle">Written by <strong>{selectedBlog.author}</strong></p>
 
-            <img className="modal-hero-image" src={selectedBlog.cover_image} alt={selectedBlog.title} />
+            <img className="modal-hero-image" src={selectedBlog.cover_image} alt={getImageAltWithCredit(selectedBlog.title, selectedBlog.cover_image)} style={{ width: '100%', height: '100%' }} />
 
             <div className="reader-content">{selectedBlog.content}</div>
 

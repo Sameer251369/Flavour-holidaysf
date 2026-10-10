@@ -13,9 +13,9 @@ const Testimonials = () => {
     },
     {
       client_name: 'Rohan & Squad',
-      trip_type: 'Offbeat Gurez Expedition',
+      trip_type: 'Kargil & Suru Valley Expedition',
       rating: 5,
-      comment: 'Gurez Valley was unreal. The Razdan Pass crossing in a 4x4 arranged by Flavour Holidays felt beautifully managed from start to finish.',
+      comment: 'Kargil and the Suru Valley were unforgettable. The mountain drive and local stops arranged by Flavour Holidays made the whole trip feel effortless.',
       avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200'
     }
   ]);

@@ -10,8 +10,8 @@ const FAQSection = () => {
       answer: 'Kashmir is a year-round destination. Spring and summer bring tulips and green valleys, autumn brings golden Chinar leaves, and winter is best for snow in Gulmarg and Pahalgam.'
     },
     {
-      question: 'Are permits required for offbeat places like Gurez or Bangus Valley?',
-      answer: 'Yes. Some border-side routes need permissions. Flavour Holidays can arrange the required permits for guests before the journey.'
+      question: 'Do I need permits to visit Kargil and Suru Valley?',
+      answer: 'Kargil is on the main Srinagar–Leh route, though some restricted or border-area stops may require advance permission. Our local team confirms requirements for your exact itinerary.'
     },
     {
       question: 'Will prepaid SIM cards work in Jammu & Kashmir?',

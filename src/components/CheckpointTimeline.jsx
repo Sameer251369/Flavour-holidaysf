@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Camera, CheckCircle, MapPin, Mountain } from 'lucide-react';
+import { getImageAltWithCredit } from '../utils/imageAlt';
 
-const CheckpointTimeline = ({ checkpoints }) => {
+const CheckpointTimeline = ({ checkpoints, tourTitle }) => {
   const [activeDay, setActiveDay] = useState(1);
 
   if (!checkpoints || checkpoints.length === 0) {
@@ -12,6 +13,9 @@ const CheckpointTimeline = ({ checkpoints }) => {
 
   return (
     <div className="checkpoint-view">
+      {tourTitle && (
+        <p className="checkpoint-route-title">Route preview: <strong>{tourTitle}</strong></p>
+      )}
       <div className="day-tabs" aria-label="Itinerary days">
         {checkpoints.map((cp) => {
           const isActive = activeDay === cp.day_number;
@@ -34,7 +38,8 @@ const CheckpointTimeline = ({ checkpoints }) => {
         <div className="checkpoint-card__media">
           <img
             src={selectedCheckpoint.image_url || 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=900'}
-            alt={selectedCheckpoint.title}
+            alt={getImageAltWithCredit(selectedCheckpoint.title, selectedCheckpoint.image_url)}
+            style={{ width: '100%', height: '100%' }}
           />
         </div>
 

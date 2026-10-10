@@ -13,7 +13,9 @@ import InquiryModal from './components/InquiryModal';
 import Footer from './components/Footer';
 
 import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './services/api';
+import { getDestinationsFromTours } from './utils/destinations';
 import './styles/index.css';
+import './styles/homepage.css';
 
 function App() {
   const [tours, setTours] = useState([]);
@@ -25,9 +27,13 @@ function App() {
 
   const [selectedTourModal, setSelectedTourModal] = useState(null);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
+  const [inquirySelectedTour, setInquirySelectedTour] = useState(null);
   const [inquiryPrefill, setInquiryPrefill] = useState(null);
   const [bookingSearchLoading, setBookingSearchLoading] = useState(false);
   const [bookingSearchError, setBookingSearchError] = useState('');
+  const [tourFilter, setTourFilter] = useState('ALL');
+  const destinations = getDestinationsFromTours(tours);
+  const featuredTour = tours.find((tour) => tour.is_featured) || tours[0];
 
   useEffect(() => {
     let isMounted = true;
@@ -76,13 +82,20 @@ function App() {
     }
   };
 
+  const handleSelectDestination = (destinationName) => {
+    setTourFilter(destinationName);
+    handleScrollTo('tours');
+  };
+
   const handleOpenInquiry = (tour = null, vehiclePref = '') => {
     setInquiryPrefill(vehiclePref ? { vehicle_preference: vehiclePref } : null);
+    setInquirySelectedTour(tour);
     setSelectedTourModal(null);
     setInquiryModalOpen(true);
   };
 
   const handleOpenInquiryWithCustom = (customData) => {
+    setInquirySelectedTour(null);
     setInquiryPrefill(customData);
     setInquiryModalOpen(true);
   };
@@ -100,10 +113,8 @@ function App() {
 
     try {
       const result = await submitBookingSearch(bookingData);
-      const matchingTours = result.tours || [];
-      if (matchingTours.length > 0) {
-        setTours(matchingTours);
-      }
+      setTours(result.tours || []);
+      setTourFilter('ALL');
       setBlogs(result.blogs || []);
       handleScrollTo('tours');
     } catch {
@@ -117,8 +128,10 @@ function App() {
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
       <Navbar
+        destinations={destinations}
         onOpenInquiry={() => handleOpenInquiry()}
         onScrollTo={handleScrollTo}
+        onSelectDestination={handleSelectDestination}
       />
 
       <Hero
@@ -132,10 +145,13 @@ function App() {
 
       <TourExplorer
         tours={tours}
+        featuredTour={featuredTour}
+        selectedFilter={tourFilter}
+        onFilterChange={setTourFilter}
         onSelectTour={(tour) => setSelectedTourModal(tour)}
       />
 
-      {tours.length > 0 && (
+      {featuredTour?.checkpoints?.length > 0 && (
         <section id="checkpoints" className="section section--compact checkpoints-section">
           <div className="section-heading section-heading--center">
             <span className="eyebrow">Route Preview</span>
@@ -143,8 +159,8 @@ function App() {
           </div>
 
           <CheckpointTimeline
-            tourTitle={tours[0].title}
-            checkpoints={tours[0].checkpoints}
+            tourTitle={featuredTour.title}
+            checkpoints={featuredTour.checkpoints}
           />
         </section>
       )}
@@ -183,7 +199,7 @@ function App() {
       {inquiryModalOpen && (
         <InquiryModal
           prefillData={inquiryPrefill}
-          selectedTour={selectedTourModal}
+          selectedTour={inquirySelectedTour}
           onClose={() => setInquiryModalOpen(false)}
         />
       )}

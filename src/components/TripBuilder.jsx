@@ -4,12 +4,12 @@ import { ArrowRight, Car, CheckCircle, Users } from 'lucide-react';
 const TripBuilder = ({ onOpenInquiryWithCustom }) => {
   const [destination, setDestination] = useState('Kashmir');
   const [vehicle, setVehicle] = useState('Thar 4WD');
-  const [vibe, setVibe] = useState('#SnowVibes');
+  const vibe = '#SnowVibes';
   const [days, setDays] = useState(5);
   const [travelers, setTravelers] = useState(2);
 
   // Dynamic price calculation
-  const baseRatePerDay = destination === 'Kashmir' ? 3200 : destination === 'Gurez' ? 3800 : 4200;
+  const baseRatePerDay = destination === 'Kashmir' ? 3200 : destination === 'Kargil' ? 3800 : 4200;
   const vehicleSurplus = vehicle === 'Thar 4WD' ? 1200 : vehicle === 'Crysta' ? 900 : 1800;
   const estimatedPricePerPerson = Math.round((baseRatePerDay * days) + vehicleSurplus);
   const totalPrice = estimatedPricePerPerson * travelers;
@@ -36,7 +36,7 @@ const TripBuilder = ({ onOpenInquiryWithCustom }) => {
             <div className="field-group">
               <label>Destination</label>
               <div className="segmented-options">
-                {['Kashmir', 'Gurez', 'Ladakh'].map((dest) => (
+                {['Kashmir', 'Kargil', 'Ladakh'].map((dest) => (
                   <button
                     key={dest}
                     type="button"
@@ -134,6 +134,7 @@ const TripBuilder = ({ onOpenInquiryWithCustom }) => {
                   <strong>₹{totalPrice.toLocaleString('en-IN')}</strong>
                 </div>
               </div>
+              <p className="estimate-note">Planning estimate only. Final route details and price are confirmed with our team.</p>
 
               <button 
                 onClick={handleCustomSubmit} 

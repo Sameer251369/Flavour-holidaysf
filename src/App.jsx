@@ -13,7 +13,7 @@ import InquiryModal from './components/InquiryModal';
 import Footer from './components/Footer';
 
 import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './services/api';
-import { getDestinationsFromTours } from './utils/destinations';
+import { getDestinationsFromTours, getPrimaryToursByDestination } from './utils/destinations';
 import './styles/index.css';
 import './styles/homepage.css';
 
@@ -32,8 +32,9 @@ function App() {
   const [bookingSearchLoading, setBookingSearchLoading] = useState(false);
   const [bookingSearchError, setBookingSearchError] = useState('');
   const [tourFilter, setTourFilter] = useState('ALL');
-  const destinations = getDestinationsFromTours(tours);
-  const featuredTour = tours.find((tour) => tour.is_featured) || tours[0];
+  const primaryTours = getPrimaryToursByDestination(tours);
+  const destinations = getDestinationsFromTours(primaryTours);
+  const featuredTour = primaryTours.find((tour) => tour.is_featured) || primaryTours[0];
 
   useEffect(() => {
     let isMounted = true;
@@ -144,7 +145,7 @@ function App() {
       />
 
       <TourExplorer
-        tours={tours}
+        tours={primaryTours}
         featuredTour={featuredTour}
         selectedFilter={tourFilter}
         onFilterChange={setTourFilter}

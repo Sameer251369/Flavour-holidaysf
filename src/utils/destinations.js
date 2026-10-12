@@ -4,12 +4,6 @@ const DESTINATION_RULES = [
   { key: 'ladakh', label: 'Ladakh', pattern: /ladakh|leh/i }
 ];
 
-const PREFERRED_DESTINATION_TOURS = {
-  kashmir: 'kashmir-snow-lakes-genz-circuit',
-  kargil: 'kargil-suru-valley-expedition',
-  ladakh: 'leh-ladakh-high-altitude-thrill'
-};
-
 const toSlug = (value) => value
   .toLowerCase()
   .trim()
@@ -40,24 +34,6 @@ export const getDestinationLabel = (destinationName = '') => {
 };
 
 export const getDestinationAnchor = (destinationName = '') => `destination-${getDestinationKey(destinationName)}`;
-
-export const getPrimaryToursByDestination = (tours = []) => {
-  const toursByDestination = new Map();
-
-  tours.forEach((tour) => {
-    const key = tour.destination_name
-      ? getDestinationKey(tour.destination_name)
-      : `tour-${tour.id}`;
-    const currentTour = toursByDestination.get(key);
-    const preferredSlug = PREFERRED_DESTINATION_TOURS[key];
-
-    if (!currentTour || tour.slug === preferredSlug) {
-      toursByDestination.set(key, tour);
-    }
-  });
-
-  return Array.from(toursByDestination.values());
-};
 
 export const getDestinationsFromTours = (tours = []) => {
   const seen = new Set();

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Calendar, MapPin, Pause, Play, Users } from 'lucide-react';
-import { getPrimaryToursByDestination } from '../utils/destinations';
 
 const HERO_VIDEO_URL = 'https://kombai-assets.b-cdn.net/generated_assets/93ec2c35-0d4c-4209-9d28-b2a8c59d8080/031636d4907d49df8fa69207bf34f191.mp4';
 const HERO_POSTER_FALLBACK = 'https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=2000&auto=format&fit=crop';
@@ -35,14 +34,13 @@ const Hero = ({
 }) => {
   const initialDateRange = getInitialDateRange();
   const [selectedTourId, setSelectedTourId] = useState('');
-  const primaryTours = getPrimaryToursByDestination(tours);
   const [checkIn, setCheckIn] = useState(initialDateRange.checkIn);
   const [checkOut, setCheckOut] = useState(initialDateRange.checkOut);
   const [people, setPeople] = useState(2);
   const [videoPaused, setVideoPaused] = useState(() => prefersReducedMotion());
   const videoRef = useRef(null);
 
-  const activeTourId = selectedTourId || primaryTours[0]?.id || '';
+  const activeTourId = selectedTourId || tours[0]?.id || '';
   const hasTours = tours.length > 0;
   const isSearching = toursLoading || bookingSearchLoading;
   const canSearch = hasTours && !toursLoading && !toursError && !bookingSearchLoading && Boolean(activeTourId);
@@ -140,7 +138,7 @@ const Hero = ({
                     disabled={!hasTours || toursLoading || Boolean(toursError)}
                   >
                     <option value="" disabled>Select a tour</option>
-                    {primaryTours.map((tour) => (
+                    {tours.map((tour) => (
                       <option key={tour.id} value={tour.id}>
                         {tour.destination_name ? `${tour.destination_name} — ${tour.title}` : tour.title}
                       </option>

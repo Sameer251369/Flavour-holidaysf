@@ -7,7 +7,7 @@ const InquiryModal = ({ prefillData, selectedTour, onClose }) => {
     name: '',
     email: '',
     phone: '',
-    travel_dates: '',
+    travel_dates: prefillData?.travel_dates || '',
     travelers_count: prefillData?.travelers_count || 2,
     vehicle_preference: prefillData?.vehicle_preference || 'Thar 4WD',
     custom_notes: prefillData?.custom_notes || (selectedTour ? `Interested in booking ${selectedTour.title}` : '')

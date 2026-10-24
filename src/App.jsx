@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import TourExplorer from './components/TourExplorer';
@@ -18,22 +18,34 @@ import './styles/index.css';
 import './styles/homepage.css';
 
 function App() {
-  const [tours, setTours] = useState([]);
-  const [availableTours, setAvailableTours] = useState([]);
+  const [allTours, setAllTours] = useState([]);
+  const [searchMatchedTours, setSearchMatchedTours] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  const [allBlogs, setAllBlogs] = useState([]);
   const [vehicles, setVehicles] = useState([]);
   const [toursLoading, setToursLoading] = useState(true);
   const [toursError, setToursError] = useState('');
 
   const [selectedTourModal, setSelectedTourModal] = useState(null);
+  const [previewTour, setPreviewTour] = useState(null);
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
   const [inquirySelectedTour, setInquirySelectedTour] = useState(null);
   const [inquiryPrefill, setInquiryPrefill] = useState(null);
   const [bookingSearchLoading, setBookingSearchLoading] = useState(false);
   const [bookingSearchError, setBookingSearchError] = useState('');
+  const [bookingSearchSummary, setBookingSearchSummary] = useState('');
   const [tourFilter, setTourFilter] = useState('ALL');
-  const destinations = getDestinationsFromTours(tours);
-  const featuredTour = tours.find((tour) => tour.is_featured) || tours[0];
+
+  const destinations = getDestinationsFromTours(allTours);
+  const tours = searchMatchedTours ?? allTours;
+  const featuredTour = useMemo(
+    () => tours.find((tour) => tour.is_featured) || tours[0] || null,
+    [tours]
+  );
+  const routePreviewTour = previewTour && tours.some((tour) => tour.id === previewTour.id)
+    ? previewTour
+    : featuredTour;
+  const hasActiveSearch = searchMatchedTours !== null;
 
   useEffect(() => {
     let isMounted = true;
@@ -51,17 +63,20 @@ function App() {
 
         if (!isMounted) return;
 
-        setTours(tourData);
-        setAvailableTours(tourData);
+        setAllTours(tourData);
+        setAllBlogs(blogData);
         setBlogs(blogData);
         setVehicles(vehicleData);
+        setPreviewTour(tourData.find((tour) => tour.is_featured) || tourData[0] || null);
       } catch {
         if (!isMounted) return;
 
-        setTours([]);
-        setAvailableTours([]);
+        setAllTours([]);
+        setSearchMatchedTours(null);
+        setAllBlogs([]);
         setBlogs([]);
         setVehicles([]);
+        setPreviewTour(null);
         setToursError('We could not load the expedition routes right now.');
       } finally {
         if (isMounted) setToursLoading(false);
@@ -82,13 +97,26 @@ function App() {
     }
   };
 
+  const clearBookingSearch = () => {
+    setSearchMatchedTours(null);
+    setBlogs(allBlogs);
+    setBookingSearchError('');
+    setBookingSearchSummary('');
+    setTourFilter('ALL');
+  };
+
   const handleSelectDestination = (destinationName) => {
+    clearBookingSearch();
     setTourFilter(destinationName);
     handleScrollTo('tours');
   };
 
   const handleOpenInquiry = (tour = null, vehiclePref = '') => {
-    setInquiryPrefill(vehiclePref ? { vehicle_preference: vehiclePref } : null);
+    setInquiryPrefill((current) => {
+      const next = { ...(current || {}) };
+      if (vehiclePref) next.vehicle_preference = vehiclePref;
+      return Object.keys(next).length ? next : null;
+    });
     setInquirySelectedTour(tour);
     setSelectedTourModal(null);
     setInquiryModalOpen(true);
@@ -100,10 +128,15 @@ function App() {
     setInquiryModalOpen(true);
   };
 
+  const handleSelectTour = (tour) => {
+    setPreviewTour(tour);
+    setSelectedTourModal(tour);
+  };
+
   const handleSelectTourBySlug = (slug) => {
-    const tour = tours.find((item) => item.slug === slug);
+    const tour = allTours.find((item) => item.slug === slug) || tours.find((item) => item.slug === slug);
     if (tour) {
-      setSelectedTourModal(tour);
+      handleSelectTour(tour);
     }
   };
 
@@ -113,17 +146,33 @@ function App() {
 
     try {
       const result = await submitBookingSearch(bookingData);
-      setTours(result.tours || []);
+      const matchedTours = result.tours || [];
+      setSearchMatchedTours(matchedTours);
       setTourFilter('ALL');
       setBlogs(result.blogs || []);
+      setPreviewTour(matchedTours.find((tour) => tour.is_featured) || matchedTours[0] || null);
+
+      const selected = allTours.find((tour) => tour.id === Number(bookingData.selected_tour));
+      const peopleLabel = Number(bookingData.people) === 1 ? '1 traveler' : `${bookingData.people} travelers`;
+      setBookingSearchSummary(
+        matchedTours.length
+          ? `Showing ${matchedTours.length} matching route${matchedTours.length === 1 ? '' : 's'} for ${peopleLabel} (${bookingData.check_in} → ${bookingData.check_out})${selected ? ` near ${selected.destination_name || selected.title}` : ''}.`
+          : `No routes matched ${peopleLabel} for ${bookingData.check_in} → ${bookingData.check_out}. Try different dates or clear the search.`
+      );
+
+      setInquiryPrefill({
+        travel_dates: `${bookingData.check_in} to ${bookingData.check_out}`,
+        travelers_count: bookingData.people
+      });
+
       handleScrollTo('tours');
     } catch {
       setBookingSearchError('We could not find matching routes. Please try again.');
+      setBookingSearchSummary('');
     } finally {
       setBookingSearchLoading(false);
     }
   };
-
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
@@ -135,7 +184,7 @@ function App() {
       />
 
       <Hero
-        tours={availableTours}
+        tours={allTours}
         toursLoading={toursLoading}
         toursError={toursError}
         onBookingSearch={handleBookingSearch}
@@ -148,20 +197,37 @@ function App() {
         featuredTour={featuredTour}
         selectedFilter={tourFilter}
         onFilterChange={setTourFilter}
-        onSelectTour={(tour) => setSelectedTourModal(tour)}
+        onSelectTour={handleSelectTour}
+        searchSummary={bookingSearchSummary}
+        hasActiveSearch={hasActiveSearch}
+        onClearSearch={clearBookingSearch}
       />
 
-      {featuredTour?.checkpoints?.length > 0 && (
+      {routePreviewTour?.checkpoints?.length > 0 && (
         <section id="checkpoints" className="section section--compact checkpoints-section">
           <div className="section-heading section-heading--center">
             <span className="eyebrow">Route Preview</span>
             <h2>Day-by-day checkpoints, clearly mapped.</h2>
+            <p className="section-heading__support">
+              Previewing {routePreviewTour.title}. Open any tour card to switch this itinerary.
+            </p>
           </div>
 
           <CheckpointTimeline
-            tourTitle={featuredTour.title}
-            checkpoints={featuredTour.checkpoints}
+            key={routePreviewTour.id}
+            tourTitle={routePreviewTour.title}
+            checkpoints={routePreviewTour.checkpoints}
           />
+
+          <div className="section-cta-row">
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => handleOpenInquiry(routePreviewTour)}
+            >
+              Ask about this route
+            </button>
+          </div>
         </section>
       )}
 

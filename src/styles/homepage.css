@@ -323,6 +323,40 @@ body {
   color: var(--muted);
 }
 
+.section-heading__support {
+  margin: 10px auto 0;
+  max-width: 52ch;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.section-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.search-result-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--card-radius);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.search-result-banner p {
+  margin: 0;
+  max-width: 70ch;
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
 .section-toolbar {
   margin-bottom: 22px;
 }

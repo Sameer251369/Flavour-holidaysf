@@ -98,7 +98,16 @@ const FeaturedRouteBand = ({ tour, onSelectTour }) => {
   );
 };
 
-const TourExplorer = ({ tours, featuredTour, onSelectTour, selectedFilter = 'ALL', onFilterChange = () => {} }) => {
+const TourExplorer = ({
+  tours,
+  featuredTour,
+  onSelectTour,
+  selectedFilter = 'ALL',
+  onFilterChange = () => {},
+  searchSummary = '',
+  hasActiveSearch = false,
+  onClearSearch = () => {}
+}) => {
 
   const destinationNames = useMemo(
     () => Array.from(new Set(tours.map((tour) => tour.destination_name).filter(Boolean))),
@@ -145,15 +154,34 @@ const TourExplorer = ({ tours, featuredTour, onSelectTour, selectedFilter = 'ALL
         </div>
 
         <div className="toolbar-actions">
-          <button
-            type="button"
-            onClick={() => onFilterChange('ALL')}
-            className="btn-outline btn-outline--light"
-          >
-            All destinations ({tours.length}) <ArrowRight size={15} aria-hidden="true" />
-          </button>
+          {hasActiveSearch ? (
+            <button
+              type="button"
+              onClick={onClearSearch}
+              className="btn-outline btn-outline--light"
+            >
+              Show all tours <ArrowRight size={15} aria-hidden="true" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onFilterChange('ALL')}
+              className="btn-outline btn-outline--light"
+            >
+              All destinations ({tours.length}) <ArrowRight size={15} aria-hidden="true" />
+            </button>
+          )}
         </div>
       </div>
+
+      {hasActiveSearch && searchSummary && (
+        <div className="search-result-banner" role="status" aria-live="polite">
+          <p>{searchSummary}</p>
+          <button type="button" className="text-button" onClick={onClearSearch}>
+            Clear date search
+          </button>
+        </div>
+      )}
 
       {filterOptions.length > 1 && (
         <div className="filter-tabs" aria-label="Filter tours by destination or route style">
@@ -173,7 +201,16 @@ const TourExplorer = ({ tours, featuredTour, onSelectTour, selectedFilter = 'ALL
 
       {hasNoTours ? (
         <div className="package-empty-state">
-          <p>No tours are available right now. Please check back soon or ask our team to plan a route.</p>
+          <p>
+            {hasActiveSearch
+              ? 'No tours matched those dates. Clear the search to browse every route again.'
+              : 'No tours are available right now. Please check back soon or ask our team to plan a route.'}
+          </p>
+          {hasActiveSearch && (
+            <button className="btn-outline" type="button" onClick={onClearSearch}>
+              Show all tours
+            </button>
+          )}
         </div>
       ) : hasNoFilterMatches ? (
         <div className="package-empty-state">

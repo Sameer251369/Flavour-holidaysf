@@ -10,18 +10,15 @@ const toSlug = (value) => value
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-|-$/g, '');
 
-const KARGIL_ROUTE_MEDIA = {
-  src: 'https://images.pexels.com/photos/31029367/pexels-photo-31029367.jpeg?auto=compress&cs=tinysrgb&w=1600',
-  alt: 'Suru River winding through mountain peaks near Kargil, photo by Vikash Singh on Pexels'
+const FALLBACK_TOUR_MEDIA = {
+  src: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1200',
+  alt: 'Himalayan tour landscape'
 };
 
-export const getTourMedia = (tour) => {
-  if (/kargil/i.test(tour?.destination_name || '')) return KARGIL_ROUTE_MEDIA;
-  return {
-    src: tour?.cover_image || 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1200',
-    alt: tour?.title || 'Himalayan tour landscape'
-  };
-};
+export const getTourMedia = (tour) => ({
+  src: tour?.cover_image || FALLBACK_TOUR_MEDIA.src,
+  alt: tour?.title || FALLBACK_TOUR_MEDIA.alt
+});
 
 export const getDestinationKey = (destinationName = '') => {
   const rule = DESTINATION_RULES.find(({ pattern }) => pattern.test(destinationName));

@@ -149,7 +149,7 @@ function App() {
       const matchedTours = result.tours || [];
       setSearchMatchedTours(matchedTours);
       setTourFilter('ALL');
-      setBlogs(result.blogs || []);
+      setBlogs(result.blogs && result.blogs.length ? result.blogs : allBlogs);
       setPreviewTour(matchedTours.find((tour) => tour.is_featured) || matchedTours[0] || null);
 
       const selected = allTours.find((tour) => tour.id === Number(bookingData.selected_tour));
@@ -200,6 +200,7 @@ function App() {
         onSelectTour={handleSelectTour}
         searchSummary={bookingSearchSummary}
         hasActiveSearch={hasActiveSearch}
+        toursLoading={toursLoading}
         onClearSearch={clearBookingSearch}
       />
 
@@ -215,7 +216,6 @@ function App() {
 
           <CheckpointTimeline
             key={routePreviewTour.id}
-            tourTitle={routePreviewTour.title}
             checkpoints={routePreviewTour.checkpoints}
           />
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Camera, CheckCircle, MapPin, Mountain } from 'lucide-react';
 import { getImageAltWithCredit } from '../utils/imageAlt';
 
-const CheckpointTimeline = ({ checkpoints, tourTitle }) => {
+const CheckpointTimeline = ({ checkpoints }) => {
   const [activeDay, setActiveDay] = useState(1);
 
   if (!checkpoints || checkpoints.length === 0) {
@@ -13,9 +13,6 @@ const CheckpointTimeline = ({ checkpoints, tourTitle }) => {
 
   return (
     <div className="checkpoint-view">
-      {tourTitle && (
-        <p className="checkpoint-route-title">Route preview: <strong>{tourTitle}</strong></p>
-      )}
       <div className="day-tabs" aria-label="Itinerary days">
         {checkpoints.map((cp) => {
           const isActive = activeDay === cp.day_number;

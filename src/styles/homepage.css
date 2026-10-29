@@ -1119,14 +1119,6 @@
   background: rgba(255, 250, 242, 0.12);
 }
 
-.site-footer .brand-mark__letters {
-  color: var(--footer-ink);
-}
-
-.site-footer .brand-mark__route {
-  background: var(--gold);
-}
-
 .site-footer .footer-socials a {
   border-color: rgba(255, 250, 242, 0.25);
   background: rgba(255, 250, 242, 0.08);

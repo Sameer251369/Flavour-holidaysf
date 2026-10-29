@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Car, MapPin, Pause, Play, ShieldCheck } from 'lucide-react';
+import { Car, ChevronDown, MapPin, Pause, Play, ShieldCheck } from 'lucide-react';
 
 const HERO_VIDEO_URL =
   'https://kombai-assets.b-cdn.net/generated_assets/93ec2c35-0d4c-4209-9d28-b2a8c59d8080/031636d4907d49df8fa69207bf34f191.mp4';
@@ -94,6 +94,7 @@ const useTypewriter = (
 
 const Hero = ({ tours = [] }) => {
   const videoRef = useRef(null);
+  const assurancesRef = useRef(null);
 
   const [videoPaused, setVideoPaused] = useState(() =>
     prefersReducedMotion()
@@ -141,12 +142,21 @@ const Hero = ({ tours = [] }) => {
     }
   };
 
+  const scrollDown = () => {
+    assurancesRef.current?.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  };
+
   return (
     <section id="hero" className="hero-scenic" aria-labelledby="hero-title">
-      <div className="hero-scenic__stage">
+      {/* MOBILE ONLY: stage fills the rest of the screen below the header + route strip.
+          Change 8rem to match your real header + cyan strip height if needed. */}
+      <div className="hero-scenic__stage max-md:!relative max-md:!flex max-md:!min-h-[calc(100svh-8rem)] max-md:!items-center max-md:!justify-center">
         <video
           ref={videoRef}
-          className="hero-scenic__video"
+          className="hero-scenic__video max-md:!absolute max-md:!inset-0 max-md:!h-full max-md:!w-full max-md:!object-cover"
           autoPlay={!prefersReducedMotion()}
           muted
           loop
@@ -158,9 +168,12 @@ const Hero = ({ tours = [] }) => {
           <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
 
-        <div className="hero-scenic__scrim" aria-hidden="true" />
+        <div
+          className="hero-scenic__scrim max-md:!absolute max-md:!inset-0"
+          aria-hidden="true"
+        />
 
-        <div className="page-shell hero-scenic__content">
+        <div className="page-shell hero-scenic__content max-md:!relative max-md:z-10">
           <p className="hero-scenic__eyebrow">Kashmir, Kargil and Ladakh</p>
 
           <h1 id="hero-title" className="hero-scenic__title">
@@ -173,13 +186,28 @@ const Hero = ({ tours = [] }) => {
           </p>
         </div>
 
+        {/* MOBILE ONLY: scroll-down indicator */}
+        <button
+          type="button"
+          onClick={scrollDown}
+          aria-label="Scroll down"
+          className="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-1 text-white md:hidden"
+        >
+          <span className="text-[11px] font-semibold uppercase tracking-[0.25em] drop-shadow">
+            Scroll
+          </span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/70 bg-black/20 backdrop-blur-sm motion-safe:animate-bounce">
+            <ChevronDown size={20} aria-hidden="true" />
+          </span>
+        </button>
+
         {!prefersReducedMotion() && (
           <button
             type="button"
             onClick={toggleVideo}
             aria-label={videoPaused ? 'Play background video' : 'Pause background video'}
             aria-pressed={videoPaused}
-            className="hero-scenic__toggle"
+            className="hero-scenic__toggle max-md:!z-10"
           >
             {videoPaused ? (
               <Play size={15} aria-hidden="true" />
@@ -191,7 +219,7 @@ const Hero = ({ tours = [] }) => {
         )}
       </div>
 
-      <div className="hero-assurances">
+      <div className="hero-assurances" ref={assurancesRef}>
         <div className="page-shell hero-assurances__inner">
           {ASSURANCES.map(({ icon: Icon, title, detail }) => (
             <div key={title} className="hero-assurance">

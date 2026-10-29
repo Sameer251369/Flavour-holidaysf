@@ -72,7 +72,14 @@ const CheckpointTimeline = ({ checkpoints }) => {
               {selectedCheckpoint.activities.map((act, idx) => (
                 <span key={idx}>
                   <CheckCircle size={15} />
-                  {act}
+                  {typeof act === 'string' ? (
+                    act
+                  ) : (
+                    <span className="activity-list__copy">
+                      <strong>{act.title}</strong>
+                      {act.description && <small>{act.description}</small>}
+                    </span>
+                  )}
                 </span>
               ))}
             </div>

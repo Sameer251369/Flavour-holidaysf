@@ -1172,13 +1172,24 @@ div[id] {
 }
 
 .checkpoint-notes div,
-.activity-list span {
+.activity-list > span {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   color: var(--muted);
   font-size: 0.9rem;
   font-weight: 700;
+}
+
+.activity-list__copy {
+  display: grid;
+  gap: 4px;
+}
+
+.activity-list__copy small {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .checkpoint-notes svg,

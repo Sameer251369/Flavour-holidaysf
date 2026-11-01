@@ -88,7 +88,11 @@ const BlogReader = ({ note, onClose, onSelectTourBySlug }) => {
         </div>
 
         {note.cover_image && (
-          <img className="modal-hero-image" src={note.cover_image} alt={note.title} />
+          <img
+            className="modal-hero-image"
+            src={note.cover_image}
+            alt={note.image_alt || note.effective_image_alt || note.title}
+          />
         )}
 
         <NoteBlocks content={note.content || note.excerpt || ''} />
@@ -114,8 +118,30 @@ const BlogReader = ({ note, onClose, onSelectTourBySlug }) => {
   );
 };
 
-const TourBlog = ({ blogs = [], onSelectTourBySlug }) => {
-  const [activeNote, setActiveNote] = useState(null);
+const TourBlog = ({
+  blogs = [],
+  onSelectTourBySlug,
+  activeNote: controlledActiveNote,
+  onOpenNote,
+  onCloseNote
+}) => {
+  const [internalActiveNote, setInternalActiveNote] = useState(null);
+
+  const activeNote = controlledActiveNote !== undefined ? controlledActiveNote : internalActiveNote;
+  const handleOpen = (note) => {
+    if (onOpenNote) {
+      onOpenNote(note);
+    } else {
+      setInternalActiveNote(note);
+    }
+  };
+  const handleClose = () => {
+    if (onCloseNote) {
+      onCloseNote();
+    } else {
+      setInternalActiveNote(null);
+    }
+  };
 
   if (!blogs.length) return null;
 
@@ -136,7 +162,7 @@ const TourBlog = ({ blogs = [], onSelectTourBySlug }) => {
             <div className="blog-card__media">
               <img
                 src={note.cover_image || FALLBACK_BLOG_IMAGE}
-                alt={note.title}
+                alt={note.image_alt || note.effective_image_alt || note.title}
                 loading="lazy"
               />
               {note.category && <span className="blog-card__tag">{note.category}</span>}
@@ -151,7 +177,7 @@ const TourBlog = ({ blogs = [], onSelectTourBySlug }) => {
               <h3 className="blog-card__title">{note.title}</h3>
               {note.excerpt && <p className="blog-card__excerpt">{note.excerpt}</p>}
 
-              <button type="button" className="blog-card__cta" onClick={() => setActiveNote(note)}>
+              <button type="button" className="blog-card__cta" onClick={() => handleOpen(note)}>
                 Read note
                 <ArrowRight size={15} aria-hidden="true" />
               </button>
@@ -163,7 +189,7 @@ const TourBlog = ({ blogs = [], onSelectTourBySlug }) => {
       {activeNote && (
         <BlogReader
           note={activeNote}
-          onClose={() => setActiveNote(null)}
+          onClose={handleClose}
           onSelectTourBySlug={onSelectTourBySlug}
         />
       )}
@@ -172,3 +198,4 @@ const TourBlog = ({ blogs = [], onSelectTourBySlug }) => {
 };
 
 export default TourBlog;
+

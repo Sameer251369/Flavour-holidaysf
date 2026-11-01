@@ -11,17 +11,26 @@ import FAQSection from './components/FAQSection';
 import Testimonials from './components/Testimonials';
 import InquiryModal from './components/InquiryModal';
 import Footer from './components/Footer';
+import SEO from './components/SEO';
 
 import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './services/api';
 import { getDestinationsFromTours } from './utils/destinations';
 import './styles/index.css';
 import './styles/homepage.css';
 
+const getSlugFromPath = () => {
+  if (typeof window === 'undefined') return null;
+  const path = window.location.pathname;
+  const match = path.match(/^\/blog\/([^/]+)/);
+  return match ? match[1] : null;
+};
+
 function App() {
   const [allTours, setAllTours] = useState([]);
   const [searchMatchedTours, setSearchMatchedTours] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [allBlogs, setAllBlogs] = useState([]);
+  const [activeBlogNote, setActiveBlogNote] = useState(null);
   const [vehicles, setVehicles] = useState([]);
   const [toursLoading, setToursLoading] = useState(true);
   const [toursError, setToursError] = useState('');
@@ -68,6 +77,14 @@ function App() {
         setBlogs(blogData);
         setVehicles(vehicleData);
         setPreviewTour(tourData.find((tour) => tour.is_featured) || tourData[0] || null);
+
+        const initialSlug = getSlugFromPath();
+        if (initialSlug) {
+          const matchedNote = blogData.find((b) => b.slug === initialSlug);
+          if (matchedNote) {
+            setActiveBlogNote(matchedNote);
+          }
+        }
       } catch {
         if (!isMounted) return;
 
@@ -89,6 +106,39 @@ function App() {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const urlSlug = getSlugFromPath();
+      if (urlSlug) {
+        const matched = allBlogs.find((b) => b.slug === urlSlug);
+        if (matched) {
+          setActiveBlogNote(matched);
+          return;
+        }
+      }
+      setActiveBlogNote(null);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [allBlogs]);
+
+  const handleOpenBlog = (note) => {
+    setActiveBlogNote(note);
+    const targetPath = `/blog/${note.slug}/`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ blogSlug: note.slug }, '', targetPath);
+    }
+  };
+
+  const handleCloseBlog = () => {
+    setActiveBlogNote(null);
+    if (window.location.pathname.startsWith('/blog/')) {
+      window.history.pushState({}, '', '/');
+    }
+  };
+
 
   const handleScrollTo = (elementId) => {
     const element = document.getElementById(elementId);
@@ -176,6 +226,17 @@ function App() {
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
+      <SEO
+        title={activeBlogNote ? (activeBlogNote.seo_title || `${activeBlogNote.title} | Flavour Holidays`) : undefined}
+        description={activeBlogNote ? (activeBlogNote.meta_description || activeBlogNote.excerpt) : undefined}
+        keywords={activeBlogNote ? (activeBlogNote.meta_keywords || undefined) : undefined}
+        canonicalUrl={activeBlogNote ? (activeBlogNote.canonical_url || `https://www.flavourholidays.com/blog/${activeBlogNote.slug}/`) : undefined}
+        image={activeBlogNote ? (activeBlogNote.cover_image || undefined) : undefined}
+        type={activeBlogNote ? 'article' : 'website'}
+        article={activeBlogNote}
+        allowIndexing={activeBlogNote ? (activeBlogNote.allow_indexing ?? true) : true}
+      />
+
       <Navbar
         destinations={destinations}
         onOpenInquiry={() => handleOpenInquiry()}
@@ -238,6 +299,9 @@ function App() {
       <TourBlog
         blogs={blogs}
         onSelectTourBySlug={handleSelectTourBySlug}
+        activeNote={activeBlogNote}
+        onOpenNote={handleOpenBlog}
+        onCloseNote={handleCloseBlog}
       />
 
       <VehiclesShowcase

@@ -304,6 +304,12 @@ const MOCK_BLOGS = [
     cover_image: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1200&auto=format&fit=crop",
     excerpt: "Planning a Kashmir trip? Here's what to know about staying connected, checking mountain-road conditions, and making time for Kargil's historic stops.",
     vibe_tag: "#TravelHacks",
+    seo_title: "Kashmir Travel Rules 2026: SIM Cards & Permits | Flavour Holidays",
+    meta_description: "Essential Kashmir travel rules for 2026: SIM cards, inner line permits, mountain road access and local insider travel hacks.",
+    meta_keywords: "kashmir travel rules, kashmir sim card, gulmarg gondola booking, kashmir trip guide",
+    canonical_url: "https://www.flavourholidays.com/blog/kashmir-travel-rules-2026-sim-permits-snow-hacks/",
+    image_alt: "Dal Lake floating shikara in Srinagar, Kashmir",
+    allow_indexing: true,
     content: `
 ### 1. The SIM Card Rule (Crucial!)
 Outside prepaid SIM cards (Airtel, Jio, Vi) **WILL NOT WORK** in Jammu & Kashmir due to security regulations. You must have:
@@ -327,6 +333,12 @@ Gondola tickets sell out weeks in advance! Always book Phase 2 (Apharwat Peak) a
     cover_image: "https://images.pexels.com/photos/31029367/pexels-photo-31029367.jpeg?auto=compress&cs=tinysrgb&w=1200",
     excerpt: "Plan a thoughtful Kargil stay with notes on the Drass memorial, Suru Valley, mountain-road timing and what to confirm locally.",
     vibe_tag: "#OffbeatVibes",
+    seo_title: "First-Timer Guide to Kargil & Suru Valley | Flavour Holidays",
+    meta_description: "Plan your Kargil stay with notes on the Drass memorial, Suru Valley, mountain-road timing and what to confirm locally.",
+    meta_keywords: "kargil travel guide, suru valley tour, drass war memorial, zoji la crossing",
+    canonical_url: "https://www.flavourholidays.com/blog/kargil-suru-valley-first-timer-guide/",
+    image_alt: "Suru valley mountain landscape near Kargil",
+    allow_indexing: true,
     content: `
 Kargil sits on the mountain road between Kashmir and Leh, with the Suru River valley branching south from town. Build in time for the journey itself and keep the daily plan flexible around road and weather conditions.
 
@@ -336,6 +348,40 @@ Kargil sits on the mountain road between Kashmir and Leh, with the Suru River va
 - **Kargil town**: Leave space for the bazaar, local food and conversations with your host.
 
 Check current Zoji La access and confirm any restrictions that apply to optional border-area stops before travel.
+    `
+  },
+  {
+    id: 3,
+    title: "Kashmir in Winter 2026–27: Weather, Snowfall & Travel Guide",
+    slug: "kashmir-in-winter-2026",
+    category: "Kashmir Travel Guide",
+    read_time: "6 min read",
+    author: "Flavour Squad",
+    cover_image: "https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=1200&auto=format&fit=crop",
+    excerpt: "Plan your Kashmir winter trip with our complete guide to weather, snowfall, best places, what to pack and travel tips for 2026-27. Explore Kashmir tour packages with Flavour Holidays.",
+    vibe_tag: "#Kashmir #Winter",
+    seo_title: "Kashmir in Winter 2026–27: Travel Guide | Flavour Holidays",
+    meta_description: "Plan your Kashmir winter trip with our complete guide to weather, snowfall, best places, what to pack and travel tips for 2026-27. Explore Kashmir tour packages with Flavour Holidays.",
+    meta_keywords: "kashmir in winter, kashmir snowfall guide, gulmarg snow tour, kashmir winter travel tips, flavour holidays",
+    canonical_url: "https://www.flavourholidays.com/blog/kashmir-in-winter-2026/",
+    image_alt: "Snow-covered mountains in Gulmarg, Kashmir",
+    allow_indexing: true,
+    content: `
+### 1. Snowfall & Weather in Kashmir (Dec - Feb)
+Winter in Kashmir transforms the valley into a surreal white wonderland. Temperatures range from -2°C to 7°C in Srinagar and drop to -10°C in Gulmarg.
+- **December**: Early snowfall starts, Dal Lake begins to frost at the edges, and cosy bukhari heaters keep houseboats warm.
+- **January (Chillai Kalan)**: The coldest 40-day winter period with peak powder snow in Gulmarg, Sonamarg, and Pahalgam.
+- **February**: Ideal for winter sports, skiing, snowboarding, and walking through pristine snow-covered pine forests.
+
+### 2. Must-Visit Winter Destinations
+- **Gulmarg**: Asia's premier ski resort. Take the Gondola up to Phase 2 (Apharwat Peak at 13,780 ft) for deep powdery snow.
+- **Pahalgam**: Stroll across snow-clad pine meadows at Baisaran and enjoy hot Kashmiri Kahwa along the freezing Lidder River.
+- **Srinagar**: Experience winter morning Shikara rides on Dal Lake enveloped in ethereal mountain mist.
+
+### 3. What to Pack for Winter
+- Thermal base layers, fleece-lined waterproof jackets, and snow boots with grip.
+- Woolen gloves, beanies, neck gaiters, and high SPF sunscreen for bright snow glare.
+- Postpaid mobile SIM cards (prepaid SIMs from outside J&K do not work).
     `
   }
 ];

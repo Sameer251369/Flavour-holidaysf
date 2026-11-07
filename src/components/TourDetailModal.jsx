@@ -12,8 +12,7 @@ import {
 import CheckpointTimeline from './CheckpointTimeline';
 import { fetchTourBySlug } from '../services/api';
 import { getTourMedia } from '../utils/destinations';
-
-const WHATSAPP_NUMBER = '919906666336';
+import { WHATSAPP_NUMBER } from '../config/contact';
 
 const SERVICE_POINTS = [
   {

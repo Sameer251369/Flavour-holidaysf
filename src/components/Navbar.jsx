@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { CalendarDays, Menu, Phone, X } from 'lucide-react';
 import BrandMark from './BrandMark';
+import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF } from '../config/contact';
 
-const PHONE_DISPLAY = '+91 99066 66336';
-const PHONE_HREF = 'tel:+919906666336';
+const PHONE_DISPLAY = CONTACT_PHONE_DISPLAY;
+const PHONE_HREF = CONTACT_PHONE_HREF;
 
 const topLinks = [
   { label: 'Upcoming Trips', id: 'tours', icon: CalendarDays },

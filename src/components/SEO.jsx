@@ -21,7 +21,7 @@ const LOCAL_BUSINESS_SCHEMA = {
   image: DEFAULT_IMAGE,
   description:
     'Local Srinagar-based travel agency specializing in Gen-Z Kashmir winter tours, Ladakh high-altitude circuits, Kargil expeditions, and 4WD mountain transport.',
-  telephone: '+91-9906000000',
+  telephone: '+91-9797666859',
   priceRange: '₹₹₹',
   currenciesAccepted: 'INR',
   paymentAccepted: 'UPI, Credit Card, Bank Transfer',

@@ -18,11 +18,22 @@ import { getDestinationsFromTours } from './utils/destinations';
 import './styles/index.css';
 import './styles/homepage.css';
 
-const getSlugFromPath = () => {
+const getBlogSlugFromPath = () => {
   if (typeof window === 'undefined') return null;
   const path = window.location.pathname;
   const match = path.match(/^\/blog\/([^/]+)/);
-  return match ? match[1] : null;
+  return match ? decodeURIComponent(match[1]) : null;
+};
+
+const getTourKeyFromPath = () => {
+  if (typeof window === 'undefined') return null;
+  const match = window.location.pathname.match(/^\/tours\/([^/]+)\/?$/);
+  return match ? decodeURIComponent(match[1]) : null;
+};
+
+const getTourPath = (tour) => {
+  const key = tour?.slug || tour?.id;
+  return key == null ? '/' : `/tours/${encodeURIComponent(String(key))}/`;
 };
 
 function App() {
@@ -78,11 +89,22 @@ function App() {
         setVehicles(vehicleData);
         setPreviewTour(tourData.find((tour) => tour.is_featured) || tourData[0] || null);
 
-        const initialSlug = getSlugFromPath();
+        const initialSlug = getBlogSlugFromPath();
         if (initialSlug) {
           const matchedNote = blogData.find((b) => b.slug === initialSlug);
           if (matchedNote) {
             setActiveBlogNote(matchedNote);
+          }
+        }
+
+        const initialTourKey = getTourKeyFromPath();
+        if (initialTourKey) {
+          const matchedTour = tourData.find(
+            (tour) => String(tour.slug || '') === initialTourKey || String(tour.id) === initialTourKey
+          );
+          if (matchedTour) {
+            setPreviewTour(matchedTour);
+            setSelectedTourModal(matchedTour);
           }
         }
       } catch {
@@ -109,20 +131,33 @@ function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const urlSlug = getSlugFromPath();
+      const tourKey = getTourKeyFromPath();
+      if (tourKey) {
+        const matchedTour = allTours.find(
+          (tour) => String(tour.slug || '') === tourKey || String(tour.id) === tourKey
+        );
+        setSelectedTourModal(matchedTour || null);
+        if (matchedTour) setPreviewTour(matchedTour);
+        setActiveBlogNote(null);
+        return;
+      }
+
+      const urlSlug = getBlogSlugFromPath();
       if (urlSlug) {
         const matched = allBlogs.find((b) => b.slug === urlSlug);
         if (matched) {
+          setSelectedTourModal(null);
           setActiveBlogNote(matched);
           return;
         }
       }
+      setSelectedTourModal(null);
       setActiveBlogNote(null);
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [allBlogs]);
+  }, [allBlogs, allTours]);
 
   const handleOpenBlog = (note) => {
     setActiveBlogNote(note);
@@ -130,6 +165,7 @@ function App() {
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ blogSlug: note.slug }, '', targetPath);
     }
+    setSelectedTourModal(null);
   };
 
   const handleCloseBlog = () => {
@@ -169,6 +205,9 @@ function App() {
     });
     setInquirySelectedTour(tour);
     setSelectedTourModal(null);
+    if (window.location.pathname.startsWith('/tours/')) {
+      window.history.replaceState({}, '', '/');
+    }
     setInquiryModalOpen(true);
   };
 
@@ -181,6 +220,18 @@ function App() {
   const handleSelectTour = (tour) => {
     setPreviewTour(tour);
     setSelectedTourModal(tour);
+    setActiveBlogNote(null);
+    const targetPath = getTourPath(tour);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ tourKey: tour.slug || String(tour.id) }, '', targetPath);
+    }
+  };
+
+  const handleCloseTour = () => {
+    setSelectedTourModal(null);
+    if (window.location.pathname.startsWith('/tours/')) {
+      window.history.replaceState({}, '', '/');
+    }
   };
 
   const handleSelectTourBySlug = (slug) => {
@@ -227,11 +278,31 @@ function App() {
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>
       <SEO
-        title={activeBlogNote ? (activeBlogNote.seo_title || `${activeBlogNote.title} | Flavour Holidays`) : undefined}
-        description={activeBlogNote ? (activeBlogNote.meta_description || activeBlogNote.excerpt) : undefined}
-        keywords={activeBlogNote ? (activeBlogNote.meta_keywords || undefined) : undefined}
-        canonicalUrl={activeBlogNote ? (activeBlogNote.canonical_url || `https://www.flavourholidays.com/blog/${activeBlogNote.slug}/`) : undefined}
-        image={activeBlogNote ? (activeBlogNote.cover_image || undefined) : undefined}
+        title={activeBlogNote
+          ? (activeBlogNote.seo_title || `${activeBlogNote.title} | Flavour Holidays`)
+          : selectedTourModal
+            ? `${selectedTourModal.title} | Flavour Holidays`
+            : undefined}
+        description={activeBlogNote
+          ? (activeBlogNote.meta_description || activeBlogNote.excerpt)
+          : selectedTourModal
+            ? (selectedTourModal.meta_description || selectedTourModal.tagline || selectedTourModal.overview)
+            : undefined}
+        keywords={activeBlogNote
+          ? (activeBlogNote.meta_keywords || undefined)
+          : selectedTourModal
+            ? `${selectedTourModal.title}, ${selectedTourModal.destination_name || ''}, Kashmir tour packages, Flavour Holidays`
+            : undefined}
+        canonicalUrl={activeBlogNote
+          ? (activeBlogNote.canonical_url || `https://www.flavourholidays.com/blog/${activeBlogNote.slug}/`)
+          : selectedTourModal
+            ? `https://www.flavourholidays.com${getTourPath(selectedTourModal)}`
+            : undefined}
+        image={activeBlogNote
+          ? (activeBlogNote.cover_image || undefined)
+          : selectedTourModal
+            ? (selectedTourModal.cover_image || undefined)
+            : undefined}
         type={activeBlogNote ? 'article' : 'website'}
         article={activeBlogNote}
         allowIndexing={activeBlogNote ? (activeBlogNote.allow_indexing ?? true) : true}
@@ -321,7 +392,7 @@ function App() {
       {selectedTourModal && (
         <TourDetailModal
           tour={selectedTourModal}
-          onClose={() => setSelectedTourModal(null)}
+          onClose={handleCloseTour}
           onBookNow={(tour) => handleOpenInquiry(tour)}
         />
       )}

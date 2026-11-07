@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp, Globe, Mail, MapPin, PhoneCall } from 'lucide-react';
 import BrandMark from './BrandMark';
+import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF } from '../config/contact';
 
 const exploreLinks = [
   { label: 'Home', target: 'hero' },
@@ -11,8 +12,7 @@ const exploreLinks = [
 ];
 
 const phones = [
-  { label: '+91 99066 66336', href: 'tel:+919906666336' },
-  { label: '+91 70068 88299', href: 'tel:+917006888299' },
+  { label: CONTACT_PHONE_DISPLAY, href: CONTACT_PHONE_HREF },
 ];
 
 const linkClass =
@@ -46,7 +46,7 @@ const Footer = ({ onScrollTo }) => (
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <a
-            href="tel:+919906666336"
+            href={CONTACT_PHONE_HREF}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
           >
             <PhoneCall size={16} />

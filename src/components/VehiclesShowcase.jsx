@@ -22,6 +22,11 @@ const VehiclesShowcase = ({ vehicles, onOpenInquiry }) => (
             <div className="meta-line">
               <span><Users size={14} /> {v.capacity_passengers}</span>
             </div>
+            {v.rent_per_day != null && v.rent_per_day !== '' && (
+              <div className="vehicle-card__price">
+                <strong>₹{Number(v.rent_per_day).toLocaleString('en-IN')}</strong> / day
+              </div>
+            )}
             <p>{v.description}</p>
 
             <div className="card-action-row">

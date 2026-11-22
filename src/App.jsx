@@ -134,6 +134,17 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (toursLoading || !window.location.hash) return undefined;
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [toursLoading]);
+
+  useEffect(() => {
     const handlePopState = () => {
       const tourKey = getTourKeyFromPath();
       if (tourKey) {
@@ -184,9 +195,31 @@ function App() {
 
 
   const handleScrollTo = (elementId) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    const isDetailRoute = /^\/(?:blog|tours)\//.test(window.location.pathname);
+    const targetUrl = `/#${elementId}`;
+
+    if (/^\/vehicles\/?$/.test(window.location.pathname)) {
+      window.location.assign(targetUrl);
+      return;
+    }
+
+    if (isDetailRoute) {
+      setActiveBlogNote(null);
+      setSelectedTourModal(null);
+    }
+
+    if (window.location.pathname !== '/' || window.location.hash !== `#${elementId}`) {
+      window.history.replaceState({}, '', targetUrl);
+    }
+
+    const scrollToTarget = () => {
+      document.getElementById(elementId)?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    if (isDetailRoute) {
+      window.requestAnimationFrame(scrollToTarget);
+    } else {
+      scrollToTarget();
     }
   };
 

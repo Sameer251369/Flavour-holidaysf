@@ -177,7 +177,7 @@ const Hero = ({ tours = [] }) => {
           <p className="hero-scenic__eyebrow">Kashmir, Kargil and Ladakh</p>
 
           <h1 id="hero-title" className="hero-scenic__title">
-            Global Community of Travelers
+            Kashmir, Kargil &amp; Ladakh Tours
           </h1>
 
           <p className="hero-scenic__rotator" aria-live="polite">

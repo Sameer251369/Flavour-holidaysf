@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const DEFAULT_TITLE = 'Flavour Holidays | Gen-Z Kashmir & Ladakh Expeditions';
+const DEFAULT_TITLE = 'Flavour Holidays | Kashmir, Kargil & Ladakh Tours';
 const DEFAULT_DESCRIPTION =
   'Explore Kashmir, Kargil and Ladakh with local-led itineraries, mountain-ready transport, and thoughtful stays from Flavour Holidays.';
 const DEFAULT_KEYWORDS =
@@ -20,7 +20,7 @@ const LOCAL_BUSINESS_SCHEMA = {
   logo: `${BASE_DOMAIN}/brand-favicon.svg`,
   image: DEFAULT_IMAGE,
   description:
-    'Local Srinagar-based travel agency specializing in Gen-Z Kashmir winter tours, Ladakh high-altitude circuits, Kargil expeditions, and 4WD mountain transport.',
+    'Local Srinagar-based travel agency offering Kashmir and Ladakh holidays, Kargil routes, and 4WD mountain transport.',
   telephone: '+91-9797666859',
   priceRange: '₹₹₹',
   currenciesAccepted: 'INR',

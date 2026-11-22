@@ -7,6 +7,7 @@ import CheckpointTimeline from './components/CheckpointTimeline';
 import TourBlog from './components/TourBlog';
 import TripBuilder from './components/TripBuilder';
 import VehiclesShowcase from './components/VehiclesShowcase';
+import VehicleRatesPage from './components/VehicleRatesPage';
 import FAQSection from './components/FAQSection';
 import Testimonials from './components/Testimonials';
 import InquiryModal from './components/InquiryModal';
@@ -17,6 +18,7 @@ import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './se
 import { getDestinationsFromTours } from './utils/destinations';
 import './styles/index.css';
 import './styles/homepage.css';
+import './styles/vehicle-rates.css';
 
 const getBlogSlugFromPath = () => {
   if (typeof window === 'undefined') return null;
@@ -274,6 +276,28 @@ function App() {
       setBookingSearchLoading(false);
     }
   };
+
+  if (window.location.pathname === '/vehicles' || window.location.pathname === '/vehicles/') {
+    return (
+      <div style={{ minHeight: '100vh', position: 'relative' }}>
+        <Navbar
+          destinations={destinations}
+          onOpenInquiry={() => handleOpenInquiry()}
+          onScrollTo={handleScrollTo}
+          onSelectDestination={handleSelectDestination}
+        />
+        <VehicleRatesPage vehicles={vehicles} onRent={handleOpenInquiry} />
+        <Footer onScrollTo={handleScrollTo} onOpenInquiry={() => handleOpenInquiry()} />
+        {inquiryModalOpen && (
+          <InquiryModal
+            prefillData={inquiryPrefill}
+            selectedTour={inquirySelectedTour}
+            onClose={() => setInquiryModalOpen(false)}
+          />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative' }}>

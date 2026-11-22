@@ -35,6 +35,11 @@ const SERVICE_POINTS = [
 const formatPrice = (price) =>
   Number(price || 0).toLocaleString('en-IN');
 
+const getStartingPrice = (tour) => {
+  const prices = (tour?.pricing_options || []).map((option) => Number(option.price)).filter(Number.isFinite);
+  return prices.length ? Math.min(...prices) : tour?.starting_price;
+};
+
 const TourDetailModal = ({ tour, onClose, onBookNow }) => {
   const [activeTab, setActiveTab] = useState('checkpoints');
   const [tourDetails, setTourDetails] = useState(tour);
@@ -110,6 +115,8 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
   const checkpoints = Array.isArray(displayTour.checkpoints)
     ? displayTour.checkpoints
     : [];
+  const audiencePrices = Array.isArray(displayTour.pricing_options) ? displayTour.pricing_options : [];
+  const startingPrice = getStartingPrice(displayTour);
 
   const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
     `Hi, I'm interested in ${displayTour.title}. Please share more details.`
@@ -218,7 +225,7 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
               </span>
 
               <strong className="text-xl font-extrabold text-[#ffe600] sm:text-2xl">
-                ₹{formatPrice(displayTour.starting_price)}
+                ₹{formatPrice(startingPrice)}
               </strong>
 
               <span className="text-sm text-white/80">
@@ -277,6 +284,33 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
             ))}
           </div>
         </section>
+
+        {audiencePrices.length > 0 && (
+          <section className="border-b border-slate-200 bg-white px-5 py-7 sm:px-8 lg:px-12" aria-labelledby="tour-pricing-title">
+            <div className="mx-auto w-full max-w-6xl">
+              <div className="mb-4">
+                <span className="text-xs font-bold uppercase tracking-[.12em] text-[#0098ba]">Choose your trip style</span>
+                <h3 id="tour-pricing-title" className="mt-1 text-2xl font-extrabold text-slate-900">Pricing by group type</h3>
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-slate-200">
+                <table className="w-full min-w-[540px] border-collapse text-left">
+                  <thead className="bg-sky-50 text-xs font-bold uppercase tracking-wide text-slate-700">
+                    <tr><th className="px-4 py-3">Audience</th><th className="px-4 py-3">Price</th><th className="px-4 py-3">Details</th></tr>
+                  </thead>
+                  <tbody>
+                    {audiencePrices.map((option) => (
+                      <tr key={option.id || option.audience} className="border-t border-slate-200 even:bg-slate-50">
+                        <th scope="row" className="px-4 py-3.5 font-bold text-slate-800">{option.audience_label || option.audience}</th>
+                        <td className="px-4 py-3.5 font-extrabold text-[#214a7b]">₹{formatPrice(option.price)} <span className="text-xs font-medium text-slate-500">{option.audience === 'per_person' ? '/ person' : ''}</span></td>
+                        <td className="px-4 py-3.5 text-sm text-slate-600">{option.note || 'Contact us to confirm your itinerary quote.'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Tour information tabs */}
         <section className="px-4 sm:px-8 lg:px-12">
@@ -433,7 +467,7 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
             </span>
 
             <strong className="mt-0.5 block text-xl font-extrabold text-slate-900 sm:text-2xl">
-              ₹{formatPrice(displayTour.starting_price)}
+              ₹{formatPrice(startingPrice)}
             </strong>
           </div>
 

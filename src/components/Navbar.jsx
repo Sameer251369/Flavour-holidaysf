@@ -15,13 +15,18 @@ const topLinks = [
 
 const barLinks = [
   { label: 'Tours', id: 'tours' },
-  { label: 'Fleet', id: 'fleet' }
+  { label: 'Vehicle rates', id: 'vehicles-page' }
 ];
 
 const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations = [] }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const go = (id) => {
+    if (id === 'vehicles-page') {
+      window.location.assign('/vehicles/');
+      setMobileOpen(false);
+      return;
+    }
     onScrollTo(id);
     setMobileOpen(false);
   };

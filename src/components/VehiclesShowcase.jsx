@@ -9,14 +9,15 @@ const VehiclesShowcase = ({ vehicles, onOpenInquiry }) => (
       <p>Comfortable highway cruisers, winter-capable 4x4s and group carriers for longer routes.</p>
     </div>
 
+    <div className="section-cta-row" style={{ marginTop: 20, marginBottom: 22 }}>
+      <a href="/vehicles/" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
+        View vehicle rates <ArrowRight size={16} />
+      </a>
+    </div>
+
     <div className="card-grid">
       {vehicles && vehicles.map((v) => (
         <article key={v.id} className="content-card vehicle-card">
-          <div className="vehicle-card__image">
-            <img src={v.image_url} alt={v.name} />
-            <span className="soft-badge">{v.badge}</span>
-          </div>
-
           <div className="content-card__body">
             <h3>{v.name}</h3>
             <div className="meta-line">

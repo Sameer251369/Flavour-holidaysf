@@ -12,6 +12,11 @@ const formatDuration = (tour) => {
 
 const formatPrice = (price) => Number(price || 0).toLocaleString('en-IN');
 
+const getStartingPrice = (tour) => {
+  const prices = (tour.pricing_options || []).map((option) => Number(option.price)).filter(Number.isFinite);
+  return prices.length ? Math.min(...prices) : tour.starting_price;
+};
+
 const PackageCard = ({ tour, onSelectTour, anchorId }) => {
   const media = getTourMedia(tour);
   const duration = formatDuration(tour);
@@ -37,7 +42,7 @@ const PackageCard = ({ tour, onSelectTour, anchorId }) => {
         <span className="tour-tile__body">
           <span className="tour-tile__title">{tour.title}</span>
           <span className="tour-tile__price">
-            Starting price <strong>₹{formatPrice(tour.starting_price)}</strong>
+            Starting price <strong>₹{formatPrice(getStartingPrice(tour))}</strong>
           </span>
         </span>
       </button>

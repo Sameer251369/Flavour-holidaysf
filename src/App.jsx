@@ -6,6 +6,7 @@ import TourDetailModal from './components/TourDetailModal';
 import CheckpointTimeline from './components/CheckpointTimeline';
 import TourBlog from './components/TourBlog';
 import TripBuilder from './components/TripBuilder';
+import TripPlannerPage from './components/TripPlannerPage';
 import VehiclesShowcase from './components/VehiclesShowcase';
 import VehicleRatesPage from './components/VehicleRatesPage';
 import FAQSection from './components/FAQSection';
@@ -195,6 +196,11 @@ function App() {
 
 
   const handleScrollTo = (elementId) => {
+    if (window.location.pathname.startsWith('/customize-trip')) {
+      if (elementId === 'customize-trip') return;
+      window.location.assign(`/#${elementId}`);
+      return;
+    }
     const isDetailRoute = /^\/(?:blog|tours)\//.test(window.location.pathname);
     const targetUrl = `/#${elementId}`;
 
@@ -334,6 +340,23 @@ function App() {
             onClose={() => setInquiryModalOpen(false)}
           />
         )}
+      </div>
+    );
+  }
+
+  if (window.location.pathname === '/customize-trip' || window.location.pathname === '/customize-trip/') {
+    return (
+      <div style={{ minHeight: '100vh', position: 'relative' }}>
+        <Navbar
+          destinations={destinations}
+          onOpenInquiry={() => handleOpenInquiry()}
+          onScrollTo={handleScrollTo}
+          onSelectDestination={handleSelectDestination}
+        />
+        <SEO title="Customize Your Trip | Flavour Holidays" description="Plan a personalized Kashmir or Ladakh trip with Flavour Holidays." canonicalUrl="https://www.flavourholidays.com/customize-trip" />
+        <TripPlannerPage />
+        <Footer onScrollTo={handleScrollTo} onOpenInquiry={() => handleOpenInquiry()} />
+        {inquiryModalOpen && <InquiryModal prefillData={inquiryPrefill} selectedTour={inquirySelectedTour} onClose={() => setInquiryModalOpen(false)} />}
       </div>
     );
   }

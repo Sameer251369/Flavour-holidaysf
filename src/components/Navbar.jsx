@@ -10,6 +10,7 @@ const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponen
 const topLinks = [
   { label: 'Upcoming Trips', id: 'tours', icon: CalendarDays },
   { label: 'Itinerary', id: 'checkpoints' },
+  { label: 'Customize Your Trip', id: 'customize-trip' },
   { label: 'Blogs', id: 'blogs' },
   { label: 'FAQs', id: 'faqs' }
 ];
@@ -19,10 +20,15 @@ const barLinks = [
   { label: 'Book a Ride', id: 'vehicles-page' }
 ];
 
-const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations = [] }) => {
+const Navbar = ({ onScrollTo, onSelectDestination, destinations = [] }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const go = (id) => {
+    if (id === 'customize-trip') {
+      window.location.assign('/customize-trip');
+      setMobileOpen(false);
+      return;
+    }
     if (id === 'vehicles-page') {
       window.location.assign('/vehicles/');
       setMobileOpen(false);
@@ -35,11 +41,6 @@ const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations =
   const selectDestination = (destination) => {
     if (onSelectDestination) onSelectDestination(destination.filterValue, destination.anchor);
     else go(destination.anchor);
-    setMobileOpen(false);
-  };
-
-  const openInquiry = () => {
-    if (onOpenInquiry) onOpenInquiry();
     setMobileOpen(false);
   };
 
@@ -129,9 +130,7 @@ const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations =
                 {item.label}
               </button>
             ))}
-            <button type="button" onClick={openInquiry} className="destination-bar__cta">
-              Plan a trip
-            </button>
+            <a href="/customize-trip" className="destination-bar__cta">Customize Your Trip</a>
           </div>
         </div>
       </nav>
@@ -178,9 +177,7 @@ const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations =
             </a>
           </div>
 
-          <button type="button" onClick={openInquiry} className="nav-drawer__cta">
-            Plan a trip
-          </button>
+          <a href="/customize-trip" className="nav-drawer__cta">Customize Your Trip</a>
         </div>
       )}
     </header>

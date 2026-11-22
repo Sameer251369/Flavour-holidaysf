@@ -6,7 +6,7 @@ import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF } from '../config/contact';
 const exploreLinks = [
   { label: 'Home', target: 'hero' },
   { label: 'Tours', target: 'tours' },
-  { label: 'Custom Trip Builder', target: 'customizer' },
+  { label: 'Customize Your Trip', target: 'customize-trip' },
   { label: 'Travel Notes', target: 'blogs' },
   { label: 'Fleet', target: 'fleet' },
 ];
@@ -54,10 +54,10 @@ const Footer = ({ onScrollTo }) => (
           </a>
           <button
             type="button"
-            onClick={() => onScrollTo('customizer')}
+            onClick={() => onScrollTo('customize-trip')}
             className="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition hover:border-white/50 hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
           >
-            Build a custom trip
+            Customize your trip
           </button>
         </div>
       </div>

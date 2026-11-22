@@ -515,3 +515,13 @@ export const submitBookingSearch = async (bookingData) => {
     };
   }
 };
+
+export const fetchTripPlannerOptions = async () => {
+  const response = await api.get('/trip-planner/options/');
+  return response.data;
+};
+
+export const submitTripInquiry = async (inquiryData) => {
+  const response = await api.post('/trip-planner/inquiries/', inquiryData);
+  return response.data;
+};

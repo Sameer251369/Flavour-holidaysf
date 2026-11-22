@@ -16,6 +16,7 @@ import SEO from './components/SEO';
 
 import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './services/api';
 import { getDestinationsFromTours } from './utils/destinations';
+import { trackTourView } from './config/metaPixel';
 import './styles/index.css';
 import './styles/homepage.css';
 import './styles/vehicle-rates.css';
@@ -107,6 +108,7 @@ function App() {
           if (matchedTour) {
             setPreviewTour(matchedTour);
             setSelectedTourModal(matchedTour);
+            trackTourView({ tourTitle: matchedTour.title });
           }
         }
       } catch {
@@ -139,7 +141,10 @@ function App() {
           (tour) => String(tour.slug || '') === tourKey || String(tour.id) === tourKey
         );
         setSelectedTourModal(matchedTour || null);
-        if (matchedTour) setPreviewTour(matchedTour);
+        if (matchedTour) {
+          setPreviewTour(matchedTour);
+          trackTourView({ tourTitle: matchedTour.title });
+        }
         setActiveBlogNote(null);
         return;
       }
@@ -220,6 +225,7 @@ function App() {
   };
 
   const handleSelectTour = (tour) => {
+    trackTourView({ tourTitle: tour.title });
     setPreviewTour(tour);
     setSelectedTourModal(tour);
     setActiveBlogNote(null);

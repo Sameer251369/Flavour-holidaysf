@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { CheckCircle, Send, X } from 'lucide-react';
 import { submitInquiry } from '../services/api';
+import { trackInquiryLead } from '../config/metaPixel';
 
 const InquiryModal = ({ prefillData, selectedTour, onClose }) => {
   const [formData, setFormData] = useState({
@@ -31,6 +32,7 @@ const InquiryModal = ({ prefillData, selectedTour, onClose }) => {
 
     const res = await submitInquiry(payload);
     setLoading(false);
+    trackInquiryLead({ tourTitle: selectedTour?.title });
     setSuccessMsg(res.message || 'Thank you. Our Kashmir host will contact you shortly.');
   };
 

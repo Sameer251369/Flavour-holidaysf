@@ -49,7 +49,7 @@ const VehicleRatesPage = ({ vehicles = [], onRent }) => {
         <div className="vehicle-rates-heading">
           <div>
             <span className="vehicle-rates-eyebrow">Transparent daily rates</span>
-            <h2>Vehicle rental prices</h2>
+            <h2>Kashmir Taxi Service</h2>
             <p>Compare the fleet at a glance. Contact our team to confirm route availability and your final itinerary quote.</p>
           </div>
           <span className="vehicle-rates-currency">Rates in INR <span>₹</span></span>
@@ -64,7 +64,7 @@ const VehicleRatesPage = ({ vehicles = [], onRent }) => {
           <div className="vehicle-rates-table-wrap">
             <table className="vehicle-rates-table">
               <thead>
-                <tr><th scope="col">Vehicle</th><th scope="col">Model</th><th scope="col">Seats</th><th scope="col">Best for</th><th scope="col">Price / day</th><th scope="col"><span className="sr-only">Action</span></th></tr>
+                <tr><th scope="col">Vehicle</th><th scope="col">Model</th><th scope="col">Seats</th><th scope="col">Route</th><th scope="col">Price / day</th><th scope="col"><span className="sr-only">Action</span></th></tr>
               </thead>
               <tbody>
                 {visibleVehicles.map((vehicle) => (

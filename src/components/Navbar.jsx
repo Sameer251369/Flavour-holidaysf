@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { CalendarDays, Menu, Phone, X } from 'lucide-react';
+import { CalendarDays, Menu, MessageCircle, Phone, X } from 'lucide-react';
 import BrandMark from './BrandMark';
-import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF } from '../config/contact';
+import { CONTACT_PHONE_HREF, WHATSAPP_NUMBER } from '../config/contact';
+import { trackWhatsAppClick } from '../config/metaPixel';
 
-const PHONE_DISPLAY = CONTACT_PHONE_DISPLAY;
 const PHONE_HREF = CONTACT_PHONE_HREF;
+const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi, I am interested in a Kashmir or Ladakh trip. Please share more details.')}`;
 
 const topLinks = [
   { label: 'Upcoming Trips', id: 'tours', icon: CalendarDays },
@@ -15,7 +16,7 @@ const topLinks = [
 
 const barLinks = [
   { label: 'Tours', id: 'tours' },
-  { label: 'Vehicle rates', id: 'vehicles-page' }
+  { label: 'Book a Ride', id: 'vehicles-page' }
 ];
 
 const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations = [] }) => {
@@ -70,9 +71,18 @@ const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations =
           </nav>
 
           <div className="site-header__actions">
-            <a href={PHONE_HREF} className="site-header__call" aria-label={`Call Flavour Holidays on ${PHONE_DISPLAY}`}>
-              <Phone size={16} aria-hidden="true" />
-              <span>{PHONE_DISPLAY}</span>
+            <a href={PHONE_HREF} className="site-header__call" aria-label="Call Flavour Holidays">
+              <Phone size={19} aria-hidden="true" />
+            </a>
+            <a
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="site-header__whatsapp"
+              aria-label="Chat with Flavour Holidays on WhatsApp"
+              onClick={() => trackWhatsAppClick({ source: 'site_header' })}
+            >
+              <MessageCircle size={19} aria-hidden="true" />
             </a>
 
             <button
@@ -152,9 +162,21 @@ const Navbar = ({ onOpenInquiry, onScrollTo, onSelectDestination, destinations =
             </button>
           ))}
 
-          <a href={PHONE_HREF} className="nav-drawer__call">
-            <Phone size={16} aria-hidden="true" /> {PHONE_DISPLAY}
-          </a>
+          <div className="nav-drawer__contact-actions">
+            <a href={PHONE_HREF} className="nav-drawer__call" aria-label="Call Flavour Holidays">
+              <Phone size={18} aria-hidden="true" /> Call us
+            </a>
+            <a
+              href={WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-drawer__whatsapp"
+              aria-label="Chat with Flavour Holidays on WhatsApp"
+              onClick={() => trackWhatsAppClick({ source: 'mobile_navigation' })}
+            >
+              <MessageCircle size={18} aria-hidden="true" /> WhatsApp
+            </a>
+          </div>
 
           <button type="button" onClick={openInquiry} className="nav-drawer__cta">
             Plan a trip

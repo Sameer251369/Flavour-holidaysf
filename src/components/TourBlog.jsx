@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, MessageCircle, X } from 'lucide-react';
 import { parseNoteContent } from '../utils/noteContent';
+import { WHATSAPP_NUMBER } from '../config/contact';
+import { trackWhatsAppClick } from '../config/metaPixel';
 
 const FALLBACK_BLOG_IMAGE =
   'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1200&auto=format&fit=crop';
@@ -59,6 +61,9 @@ const BlogReader = ({ note, onClose, onSelectTourBySlug }) => {
     note.related_tour_slug ||
     note.related_tour_slug_name ||
     (typeof note.related_tour === 'string' ? note.related_tour : note.related_tour?.slug);
+  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hi, I read your travel note "${note.title}" and would like help planning a Kashmir or Ladakh trip.`
+  )}`;
 
   return (
     <div
@@ -97,22 +102,33 @@ const BlogReader = ({ note, onClose, onSelectTourBySlug }) => {
 
         <NoteBlocks content={note.content || note.excerpt || ''} />
 
-        {relatedSlug && onSelectTourBySlug && (
-          <div className="reader-related">
-            <span>This note is tied to a published route.</span>
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => {
-                onClose();
-                onSelectTourBySlug(relatedSlug);
-              }}
-            >
-              View route
-              <ArrowRight size={16} aria-hidden="true" />
-            </button>
-          </div>
-        )}
+        <div className="reader-related">
+          {relatedSlug && onSelectTourBySlug && (
+            <>
+              <span>This note is tied to a published route.</span>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  onClose();
+                  onSelectTourBySlug(relatedSlug);
+                }}
+              >
+                View route
+                <ArrowRight size={16} aria-hidden="true" />
+              </button>
+            </>
+          )}
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary reader-whatsapp"
+            onClick={() => trackWhatsAppClick({ source: 'blog_note', tourTitle: note.title })}
+          >
+            <MessageCircle size={17} aria-hidden="true" /> Ask on WhatsApp
+          </a>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import CheckpointTimeline from './CheckpointTimeline';
 import { fetchTourBySlug } from '../services/api';
 import { getTourMedia } from '../utils/destinations';
 import { WHATSAPP_NUMBER } from '../config/contact';
+import { trackWhatsAppClick } from '../config/metaPixel';
 
 const SERVICE_POINTS = [
   {
@@ -228,9 +229,7 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
                 ₹{formatPrice(startingPrice)}
               </strong>
 
-              <span className="text-sm text-white/80">
-                / person
-              </span>
+            
             </div>
 
             {/* Contact actions */}
@@ -248,6 +247,7 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick({ source: 'tour_detail', tourTitle: displayTour.title })}
                 className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#25d366] px-6 py-3 text-sm font-bold text-slate-950 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 sm:w-auto sm:min-w-[200px] sm:px-7 sm:text-base"
               >
                 <MessageCircle size={19} aria-hidden="true" />
@@ -301,7 +301,7 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
                     {audiencePrices.map((option) => (
                       <tr key={option.id || option.audience} className="border-t border-slate-200 even:bg-slate-50">
                         <th scope="row" className="px-4 py-3.5 font-bold text-slate-800">{option.audience_label || option.audience}</th>
-                        <td className="px-4 py-3.5 font-extrabold text-[#214a7b]">₹{formatPrice(option.price)} <span className="text-xs font-medium text-slate-500">{option.audience === 'per_person' ? '/ person' : ''}</span></td>
+                      
                         <td className="px-4 py-3.5 text-sm text-slate-600">{option.note || 'Contact us to confirm your itinerary quote.'}</td>
                       </tr>
                     ))}

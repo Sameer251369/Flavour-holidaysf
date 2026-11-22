@@ -295,14 +295,15 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
               <div className="overflow-x-auto rounded-xl border border-slate-200">
                 <table className="w-full min-w-[540px] border-collapse text-left">
                   <thead className="bg-sky-50 text-xs font-bold uppercase tracking-wide text-slate-700">
-                    <tr><th className="px-4 py-3">Audience</th><th className="px-4 py-3">Price</th><th className="px-4 py-3">Details</th></tr>
+                    <tr><th className="px-4 py-3">Audience</th><th className="px-4 py-3">Price</th><th className="px-4 py-3">Note</th></tr>
                   </thead>
                   <tbody>
                     {audiencePrices.map((option) => (
                       <tr key={option.id || option.audience} className="border-t border-slate-200 even:bg-slate-50">
                         <th scope="row" className="px-4 py-3.5 font-bold text-slate-800">{option.audience_label || option.audience}</th>
                       
-                        <td className="px-4 py-3.5 text-sm text-slate-600">{option.note || 'Contact us to confirm your itinerary quote.'}</td>
+                        <td className="px-4 py-3.5 text-sm font-semibold text-slate-800">₹{formatPrice(option.price)}</td>
+                        <td className="px-4 py-3.5 text-sm text-slate-600">{option.note || '—'}</td>
                       </tr>
                     ))}
                   </tbody>

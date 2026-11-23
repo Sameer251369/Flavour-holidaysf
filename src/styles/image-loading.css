@@ -1,0 +1,35 @@
+.optimized-image {
+  background-color: #e8eef1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, .12), rgba(255, 255, 255, .12)),
+    var(--image-preview, linear-gradient(105deg, #e8eef1 25%, #f5f7f8 43%, #e8eef1 62%));
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-size: cover;
+  filter: blur(4px);
+  transition: filter .32s ease;
+}
+
+.optimized-image.is-loaded {
+  background-image: none;
+  filter: none;
+}
+
+.optimized-image.is-fallback {
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .optimized-image:not(.is-loaded) {
+    animation: image-shimmer 1.45s ease-in-out infinite;
+  }
+}
+
+@keyframes image-shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.07); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .optimized-image { transition: none; }
+}

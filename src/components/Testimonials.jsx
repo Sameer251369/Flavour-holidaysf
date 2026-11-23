@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Quote, Star } from 'lucide-react';
 import { fetchTestimonials } from '../services/api';
+import OptimizedImage from './OptimizedImage';
 
 const Testimonials = () => {
   const [reviews, setReviews] = useState([
@@ -49,9 +50,11 @@ const Testimonials = () => {
             <p>{rev.comment}</p>
 
             <div className="testimonial-card__guest">
-              <img
+              <OptimizedImage
                 src={rev.avatar_url || rev.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200'}
                 alt={rev.client_name || rev.name}
+                loading="lazy"
+                sizes="48px"
               />
               <div>
                 <strong>{rev.client_name || rev.name}</strong>

@@ -3,6 +3,7 @@ import { ArrowRight, MessageCircle, X } from 'lucide-react';
 import { parseNoteContent } from '../utils/noteContent';
 import { WHATSAPP_NUMBER } from '../config/contact';
 import { trackWhatsAppClick } from '../config/metaPixel';
+import OptimizedImage from './OptimizedImage';
 
 const FALLBACK_BLOG_IMAGE =
   'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=1200&auto=format&fit=crop';
@@ -93,10 +94,12 @@ const BlogReader = ({ note, onClose, onSelectTourBySlug }) => {
         </div>
 
         {note.cover_image && (
-          <img
+          <OptimizedImage
             className="modal-hero-image"
             src={note.cover_image}
             alt={note.image_alt || note.effective_image_alt || note.title}
+            priority
+            sizes="100vw"
           />
         )}
 
@@ -176,10 +179,11 @@ const TourBlog = ({
         {blogs.map((note) => (
           <article key={note.id || note.slug} className="blog-card">
             <div className="blog-card__media">
-              <img
+              <OptimizedImage
                 src={note.cover_image || FALLBACK_BLOG_IMAGE}
                 alt={note.image_alt || note.effective_image_alt || note.title}
                 loading="lazy"
+                sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw"
               />
               {note.category && <span className="blog-card__tag">{note.category}</span>}
             </div>

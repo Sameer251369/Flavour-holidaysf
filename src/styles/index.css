@@ -453,7 +453,7 @@ div[id] {
 .hero-media {
   z-index: -2;
   overflow: hidden;
-  background: var(--hero-bg) url('https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=80&w=2000&auto=format&fit=crop') center / cover no-repeat;
+  background: var(--hero-bg) url('https://images.unsplash.com/photo-1548625149-fc4a29cf7092?q=75&w=1280&auto=format&fit=crop') center / cover no-repeat;
 }
 
 .hero-video {

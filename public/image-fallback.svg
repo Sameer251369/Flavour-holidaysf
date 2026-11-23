@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Mountain landscape">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#c9e4f2"/><stop offset="1" stop-color="#f4f1e8"/></linearGradient>
+    <linearGradient id="valley" x2="0" y2="1"><stop stop-color="#76a999"/><stop offset="1" stop-color="#345f56"/></linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#sky)"/>
+  <circle cx="890" cy="190" r="72" fill="#fff5d6" opacity=".9"/>
+  <path d="m0 520 250-300 155 182 220-310 335 390 125-150 260 240v228H0Z" fill="#8caeb2"/>
+  <path d="m314 295 91 107 220-310 103 120-62-37-42 42-45-35-48 77-43-20-82 93Z" fill="#f8fbf8"/>
+  <path d="m0 575 275-175 227 180 222-196 260 197 216-155v374H0Z" fill="url(#valley)"/>
+  <path d="M0 675c220-115 392-93 592 0s375 80 608-35v160H0Z" fill="#284f4b" opacity=".72"/>
+</svg>

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getDestinationAnchor, getDestinationLabel, getTourMedia } from '../utils/destinations';
+import OptimizedImage from './OptimizedImage';
 
 const formatDuration = (tour) => {
   if (tour.duration_days && tour.duration_nights) {
@@ -29,10 +30,11 @@ const PackageCard = ({ tour, onSelectTour, anchorId }) => {
         aria-label={`View itinerary: ${tour.title}`}
         className="tour-tile"
       >
-        <img
+        <OptimizedImage
           src={media.src}
           alt={media.alt}
           loading="lazy"
+          sizes="(max-width: 640px) 86vw, (max-width: 1024px) 45vw, 30vw"
           className="tour-tile__media"
         />
         <span className="tour-tile__scrim" aria-hidden="true" />
@@ -204,9 +206,10 @@ const TourExplorer = ({
         <>
           <div className="tours-banner">
             {bannerMedia && (
-              <img
+              <OptimizedImage
                 src={bannerMedia.src}
                 alt={bannerMedia.alt}
+                sizes="100vw"
                 className="tours-banner__media"
               />
             )}

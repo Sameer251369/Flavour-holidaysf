@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Camera, CheckCircle, MapPin, Mountain } from 'lucide-react';
 import { getImageAltWithCredit } from '../utils/imageAlt';
+import OptimizedImage from './OptimizedImage';
 
 const CheckpointTimeline = ({ checkpoints }) => {
   const [activeDay, setActiveDay] = useState(1);
@@ -33,9 +34,11 @@ const CheckpointTimeline = ({ checkpoints }) => {
 
       <article className="checkpoint-card">
         <div className="checkpoint-card__media">
-          <img
+          <OptimizedImage
             src={selectedCheckpoint.image_url || 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=900'}
             alt={getImageAltWithCredit(selectedCheckpoint.title, selectedCheckpoint.image_url)}
+            priority
+            sizes="(max-width: 800px) 100vw, 50vw"
             style={{ width: '100%', height: '100%' }}
           />
         </div>

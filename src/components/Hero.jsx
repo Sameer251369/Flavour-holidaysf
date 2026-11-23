@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Car, ChevronDown, MapPin, Pause, Play, ShieldCheck } from 'lucide-react';
+import { getOptimizedImageUrl } from '../utils/imageDelivery';
 
 const HERO_VIDEO_URL =
   'https://kombai-assets.b-cdn.net/generated_assets/93ec2c35-0d4c-4209-9d28-b2a8c59d8080/031636d4907d49df8fa69207bf34f191.mp4';
@@ -99,6 +100,9 @@ const Hero = ({ tours = [] }) => {
   const [videoPaused, setVideoPaused] = useState(() =>
     prefersReducedMotion()
   );
+  const [isMobileViewport, setIsMobileViewport] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches
+  );
 
   const typed = useTypewriter(TYPED_PHRASES);
 
@@ -110,6 +114,25 @@ const Hero = ({ tours = [] }) => {
   );
 
   const heroPoster = kashmirPoster || HERO_POSTER_FALLBACK;
+  const optimizedHeroPoster = getOptimizedImageUrl(heroPoster, isMobileViewport ? 768 : 1280);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 700px)');
+    const updateViewport = (event) => setIsMobileViewport(event.matches);
+    setIsMobileViewport(media.matches);
+    media.addEventListener('change', updateViewport);
+    return () => media.removeEventListener('change', updateViewport);
+  }, []);
+
+  useEffect(() => {
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.as = 'image';
+    preload.href = optimizedHeroPoster;
+    preload.fetchPriority = 'high';
+    document.head.appendChild(preload);
+    return () => preload.remove();
+  }, [optimizedHeroPoster]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -162,7 +185,7 @@ const Hero = ({ tours = [] }) => {
           loop
           playsInline
           preload="metadata"
-          poster={heroPoster}
+          poster={optimizedHeroPoster}
           aria-hidden="true"
         >
           <source src={HERO_VIDEO_URL} type="video/mp4" />

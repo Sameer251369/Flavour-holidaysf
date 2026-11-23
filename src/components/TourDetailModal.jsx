@@ -12,6 +12,7 @@ import {
 import CheckpointTimeline from './CheckpointTimeline';
 import { fetchTourBySlug } from '../services/api';
 import { getTourMedia } from '../utils/destinations';
+import OptimizedImage from './OptimizedImage';
 import { WHATSAPP_NUMBER } from '../config/contact';
 import { trackWhatsAppClick } from '../config/metaPixel';
 
@@ -160,9 +161,11 @@ const TourDetailModal = ({ tour, onClose, onBookNow }) => {
         {/* Hero section */}
         <header className="relative flex min-h-[510px] items-end overflow-hidden bg-slate-900 sm:min-h-[540px] lg:min-h-[580px]">
           {heroImage && (
-            <img
+            <OptimizedImage
               src={heroImage}
               alt={media.alt || displayTour.title || 'Tour destination'}
+              priority
+              sizes="100vw"
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
           )}

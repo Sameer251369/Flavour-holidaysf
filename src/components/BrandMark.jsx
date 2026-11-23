@@ -1,12 +1,17 @@
 import React from 'react';
+import OptimizedImage from './OptimizedImage';
 
 const BrandMark = ({ compact = false }) => (
   <span className="inline-flex items-center gap-3">
     <span className="flex shrink-0" aria-hidden="true">
-      <img
+      <OptimizedImage
         className="block h-12 w-12 rounded-xl object-cover"
         src="/WhatsApp%20Image%202026-10-29%20at%202.20.15%20PM.jpeg"
         alt=""
+        width="48"
+        height="48"
+        priority
+        sizes="48px"
       />
     </span>
     {!compact && (

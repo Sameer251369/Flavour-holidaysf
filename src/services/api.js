@@ -463,6 +463,17 @@ export const fetchVehicles = async () => {
   }
 };
 
+export const fetchKashmirRouteFares = async () => {
+  try {
+    const response = await api.get('/kashmir-route-fares/');
+    const data = response.data.results || response.data;
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.warn("API server offline, serving empty Kashmir route fares", error);
+    return [];
+  }
+};
+
 export const fetchFAQs = async () => {
   try {
     const response = await api.get('/faqs/');

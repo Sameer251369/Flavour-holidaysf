@@ -15,12 +15,13 @@ import InquiryModal from './components/InquiryModal';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 
-import { fetchTours, fetchBlogs, fetchVehicles, submitBookingSearch } from './services/api';
+import { fetchTours, fetchBlogs, fetchVehicles, fetchKashmirRouteFares, submitBookingSearch } from './services/api';
 import { getDestinationsFromTours } from './utils/destinations';
 import { trackTourView } from './config/metaPixel';
 import './styles/index.css';
 import './styles/homepage.css';
 import './styles/vehicle-rates.css';
+import './styles/image-loading.css';
 
 const getBlogSlugFromPath = () => {
   if (typeof window === 'undefined') return null;
@@ -47,6 +48,7 @@ function App() {
   const [allBlogs, setAllBlogs] = useState([]);
   const [activeBlogNote, setActiveBlogNote] = useState(null);
   const [vehicles, setVehicles] = useState([]);
+  const [kashmirRouteFares, setKashmirRouteFares] = useState([]);
   const [toursLoading, setToursLoading] = useState(true);
   const [toursError, setToursError] = useState('');
 
@@ -79,10 +81,11 @@ function App() {
       setToursError('');
 
       try {
-        const [tourData, blogData, vehicleData] = await Promise.all([
+        const [tourData, blogData, vehicleData, fareData] = await Promise.all([
           fetchTours(),
           fetchBlogs(),
-          fetchVehicles()
+          fetchVehicles(),
+          fetchKashmirRouteFares()
         ]);
 
         if (!isMounted) return;
@@ -91,6 +94,7 @@ function App() {
         setAllBlogs(blogData);
         setBlogs(blogData);
         setVehicles(vehicleData);
+        setKashmirRouteFares(fareData);
         setPreviewTour(tourData.find((tour) => tour.is_featured) || tourData[0] || null);
 
         const initialSlug = getBlogSlugFromPath();
@@ -331,7 +335,7 @@ function App() {
           onScrollTo={handleScrollTo}
           onSelectDestination={handleSelectDestination}
         />
-        <VehicleRatesPage vehicles={vehicles} onRent={handleOpenInquiry} />
+        <VehicleRatesPage vehicles={vehicles} routeFares={kashmirRouteFares} onRent={handleOpenInquiry} />
         <Footer onScrollTo={handleScrollTo} onOpenInquiry={() => handleOpenInquiry()} />
         {inquiryModalOpen && (
           <InquiryModal

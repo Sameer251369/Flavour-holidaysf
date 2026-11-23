@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CalendarDays, Menu, MessageCircle, Phone, X } from 'lucide-react';
+import { CalendarDays, CarFront, MapPinned, Menu, MessageCircle, Phone, X } from 'lucide-react';
 import BrandMark from './BrandMark';
 import { CONTACT_PHONE_HREF, WHATSAPP_NUMBER } from '../config/contact';
 import { trackWhatsAppClick } from '../config/metaPixel';
@@ -17,11 +17,13 @@ const topLinks = [
 
 const barLinks = [
   { label: 'Tours', id: 'tours' },
-  { label: 'Book a Ride', id: 'vehicles-page' }
+  { label: 'Book a Ride', id: 'vehicles-page', icon: CarFront }
 ];
 
 const Navbar = ({ onScrollTo, onSelectDestination, destinations = [] }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const isRidePage = /^\/vehicles\/?$/.test(window.location.pathname);
+  const isCustomizePage = /^\/customize-trip\/?$/.test(window.location.pathname);
 
   const go = (id) => {
     if (id === 'customize-trip') {
@@ -125,12 +127,18 @@ const Navbar = ({ onScrollTo, onSelectDestination, destinations = [] }) => {
                 key={item.id}
                 type="button"
                 onClick={() => go(item.id)}
-                className="destination-bar__link"
+                className={`destination-bar__link${item.icon ? ' destination-bar__action-link' : ''}`}
+                aria-label={item.label}
+                aria-current={item.id === 'vehicles-page' && isRidePage ? 'page' : undefined}
               >
-                {item.label}
+                {item.icon && <item.icon className="destination-bar__action-icon" size={17} aria-hidden="true" />}
+                <span>{item.label}</span>
               </button>
             ))}
-            <a href="/customize-trip" className="destination-bar__cta">Customize Your Trip</a>
+            <a href="/customize-trip" className="destination-bar__cta destination-bar__action-link" aria-label="Customize Your Trip" aria-current={isCustomizePage ? 'page' : undefined}>
+              <MapPinned className="destination-bar__action-icon" size={17} aria-hidden="true" />
+              <span>Customize Your Trip</span>
+            </a>
           </div>
         </div>
       </nav>

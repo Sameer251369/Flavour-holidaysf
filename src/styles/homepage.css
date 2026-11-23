@@ -194,6 +194,9 @@
   border-bottom-color: var(--highlight, #ffe600);
 }
 
+.destination-bar__action-icon { display: none; flex: 0 0 auto; }
+.destination-bar__action-link { gap: 6px; }
+
 .destination-bar__cta {
   flex: 0 0 auto;
   min-height: 34px;
@@ -207,8 +210,10 @@
   font-size: 0.84rem;
   font-weight: 800;
   white-space: nowrap;
-  transition: background 0.18s ease, color 0.18s ease;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
+
+.destination-bar__action-link[aria-current='page'] { box-shadow: 0 0 0 2px rgba(255, 255, 255, .28); }
 
 .destination-bar__cta:hover {
   background: #0f172a;
@@ -1194,13 +1199,30 @@
     display: inline-flex;
   }
 
-  .destination-bar__group--end {
-    display: none;
+  .destination-bar__inner {
+    gap: 10px;
   }
 
-  .destination-bar__inner {
-    gap: 14px;
+  .destination-bar__group--scroll { flex: 1 1 auto; }
+  .destination-bar__group--end { display: flex; flex: 0 0 auto; gap: 8px; }
+  .destination-bar__link.destination-bar__action-link,
+  .destination-bar__cta.destination-bar__action-link {
+    min-height: 38px;
+    padding-inline: 10px;
+    border: 1px solid rgba(255, 255, 255, .48);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 750;
+    gap: 5px;
   }
+
+  .destination-bar__action-icon { display: inline-block; }
+  .destination-bar__cta.destination-bar__action-link { background: #fff; color: var(--brand-strong); }
+  .destination-bar__action-link:hover { transform: translateY(-1px); }
+  .destination-bar__action-link[aria-current='page'] { background: #fff; color: var(--brand-strong); border-color: #fff; }
+  .destination-bar__action-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
   .destination-bar__label {
     display: none;
@@ -1237,6 +1259,15 @@
     min-height: 0;
     padding-block: 32px 40px;
   }
+
+  .destination-bar__inner { padding-inline: 10px; gap: 7px; }
+  .destination-bar__group { gap: 10px; }
+  .destination-bar__group--scroll { min-width: 0; }
+  .destination-bar__group--end { gap: 5px; }
+  .destination-bar__link { font-size: .82rem; }
+  .destination-bar__link.destination-bar__action-link,
+  .destination-bar__cta.destination-bar__action-link { min-height: 36px; padding-inline: 8px; font-size: .73rem; }
+  .destination-bar__action-link svg { width: 15px; height: 15px; }
 
   .hero-scenic__title {
     max-width: 14ch;

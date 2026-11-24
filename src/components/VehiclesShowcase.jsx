@@ -14,9 +14,9 @@ const VehiclesShowcase = ({ vehicles = [], onOpenInquiry }) => {
       <p>Comfortable highway cruisers, winter-capable 4x4s and group carriers for longer routes.</p>
     </div>
 
-    <div className="section-cta-row" style={{ marginTop: 20, marginBottom: 22 }}>
-      <a href="/vehicles/" className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: 9, textDecoration: 'none' }}>
-        View vehicle rates <ArrowRight size={16} />
+    <div className="section-cta-row fleet-section__cta-row">
+      <a href="/vehicles/" className="btn-primary fleet-section__rates-link">
+        <span>View vehicle rates</span><ArrowRight size={16} />
       </a>
     </div>
 

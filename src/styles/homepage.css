@@ -1089,13 +1089,17 @@
   margin-top: 26px;
 }
 
+.fleet-section__cta-row { margin: 20px 0 22px; }
+.fleet-section__rates-link { max-width: 100%; gap: 9px; padding-inline: clamp(14px, 3vw, 22px); text-align: center; }
+.fleet-section__rates-link span { min-width: 0; text-wrap: balance; }
+
 .fleet-table-frame { position: relative; }
 .fleet-table-scroll-hint { display: none; }
 .fleet-table-scroll-edge { display: none; }
 
 .fleet-table-wrap {
-  width: min(calc(100% - (2 * var(--page-gutter))), var(--content-max-width));
-  margin: 30px auto 0;
+  width: 100%;
+  margin: 0 auto;
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -1159,18 +1163,23 @@
 .fleet-table__rate { color: var(--pine) !important; font-weight: 800; }
 .fleet-table__rate small { color: var(--muted); font-weight: 600; }
 .fleet-table__rent { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
-.fleet-table__empty { width: min(calc(100% - (2 * var(--page-gutter))), var(--content-max-width)); margin: 30px auto 0; color: var(--muted); }
+.fleet-table__empty { width: 100%; margin: 30px auto 0; color: var(--muted); }
 
 @media (max-width: 700px) {
-  .fleet-table-scroll-hint { display: flex; align-items: center; justify-content: flex-end; gap: 6px; width: calc(100% - (2 * var(--page-gutter))); margin: 0 auto 9px; color: var(--pine); font-size: 0.76rem; font-weight: 800; }
+  .fleet-table-scroll-hint { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 0 auto 9px; color: var(--pine); font-size: 0.76rem; font-weight: 800; text-align: center; }
   .fleet-table-scroll-hint svg { flex: none; animation: fleet-table-nudge 1.4s ease-in-out infinite; }
   .fleet-table-scroll-edge { position: absolute; top: 1px; right: 1px; bottom: 1px; z-index: 1; display: flex; width: 34px; align-items: center; justify-content: center; border-radius: 0 11px 11px 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0), color-mix(in srgb, var(--surface) 96%, transparent) 58%); color: var(--pine); pointer-events: none; }
   .fleet-table-frame.is-scrolled-end .fleet-table-scroll-edge { display: none; }
-  .fleet-table-wrap { width: calc(100% - (2 * var(--page-gutter))); }
   .fleet-table { min-width: 850px; }
   .fleet-table th,
   .fleet-table td { padding: 13px 11px; font-size: 0.8rem; }
   .fleet-table__vehicle img { width: 58px; height: 48px; }
+}
+
+@media (max-width: 380px) {
+  .fleet-section__rates-link { gap: 7px; padding: 10px 12px; font-size: 0.9rem; }
+  .fleet-section__rates-link svg { flex: 0 0 auto; }
+  .fleet-table-scroll-hint { font-size: 0.72rem; }
 }
 
 @keyframes fleet-table-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(4px); } }

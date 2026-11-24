@@ -41,7 +41,6 @@ const VehiclesShowcase = ({ vehicles = [], onOpenInquiry }) => {
                   <th scope="col">Route</th>
                   <th scope="col">Capacity</th>
                   <th scope="col">Terrain</th>
-                  <th scope="col">Description</th>
                   <th scope="col">Rate</th>
                   <th scope="col">Book</th>
                 </tr>
@@ -62,7 +61,6 @@ const VehiclesShowcase = ({ vehicles = [], onOpenInquiry }) => {
                     <td>{v.route_description || 'Contact us to confirm the best route.'}</td>
                     <td>{v.capacity_passengers}</td>
                     <td>{v.terrain_type}</td>
-                    <td>{v.description}</td>
                     <td className="fleet-table__rate">
                       {v.rent_per_day != null && v.rent_per_day !== ''
                         ? <>₹{Number(v.rent_per_day).toLocaleString('en-IN')} <small>/ day</small></>

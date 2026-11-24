@@ -1105,10 +1105,18 @@
 
 .fleet-table {
   width: 100%;
-  min-width: 1050px;
+  min-width: 900px;
   border-collapse: collapse;
+  table-layout: fixed;
   text-align: left;
 }
+
+.fleet-table th:nth-child(1) { width: 24%; }
+.fleet-table th:nth-child(2) { width: 25%; }
+.fleet-table th:nth-child(3) { width: 14%; }
+.fleet-table th:nth-child(4) { width: 20%; }
+.fleet-table th:nth-child(5) { width: 10%; }
+.fleet-table th:nth-child(6) { width: 7%; }
 
 .fleet-table th,
 .fleet-table td {
@@ -1134,12 +1142,13 @@
 .fleet-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--bg-soft) 45%, white); }
 .fleet-table tbody tr:last-child th,
 .fleet-table tbody tr:last-child td { border-bottom: 0; }
-.fleet-table tbody th { min-width: 220px; color: var(--ink-strong); font-weight: 700; }
-.fleet-table tbody td:nth-child(2) { min-width: 230px; }
-.fleet-table tbody td:nth-child(4),
-.fleet-table tbody td:nth-child(5) { min-width: 210px; }
-.fleet-table tbody td:nth-child(6) { min-width: 125px; white-space: nowrap; }
-.fleet-table tbody td:last-child { min-width: 105px; }
+.fleet-table tbody th { color: var(--ink-strong); font-weight: 700; }
+.fleet-table tbody td { overflow-wrap: anywhere; }
+.fleet-table tbody td:nth-child(1) { min-width: 200px; }
+.fleet-table tbody td:nth-child(2) { min-width: 95px; }
+.fleet-table tbody td:nth-child(3) { min-width: 165px; }
+.fleet-table tbody td:nth-child(4) { min-width: 100px; white-space: nowrap; }
+.fleet-table tbody td:nth-child(5) { min-width: 90px; }
 
 .fleet-table__vehicle { display: flex; align-items: flex-start; gap: 12px; }
 .fleet-table__vehicle img { width: 72px; height: 58px; flex: 0 0 auto; border-radius: 7px; background: var(--bg-soft); object-fit: contain; }
@@ -1158,7 +1167,7 @@
   .fleet-table-scroll-edge { position: absolute; top: 1px; right: 1px; bottom: 1px; z-index: 1; display: flex; width: 34px; align-items: center; justify-content: center; border-radius: 0 11px 11px 0; background: linear-gradient(90deg, rgba(255, 255, 255, 0), color-mix(in srgb, var(--surface) 96%, transparent) 58%); color: var(--pine); pointer-events: none; }
   .fleet-table-frame.is-scrolled-end .fleet-table-scroll-edge { display: none; }
   .fleet-table-wrap { width: calc(100% - (2 * var(--page-gutter))); }
-  .fleet-table { min-width: 980px; }
+  .fleet-table { min-width: 850px; }
   .fleet-table th,
   .fleet-table td { padding: 13px 11px; font-size: 0.8rem; }
   .fleet-table__vehicle img { width: 58px; height: 48px; }
